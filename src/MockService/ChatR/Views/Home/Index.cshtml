@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Letstalk UI Mock";
+}
+
+<div class="container body-content">
+    @using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        <div id="form-container">
+            <h1>Letstalk UI Mock</h1>
+            <div id="input-box">
+                <label for="username">Choose a user name to start</label>
+                <input type="text" id="username" class="input-medium search-query" placeholder="Type here..." name="username" autofocus="autofocus"
+                       maxlength="15" required="required" />
+                <button type="submit" class="btn btn-large btn-primary">Let's chat!</button>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8B168B46-BDAA-4A89-AAA5-923E980DF7D7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.Client", "src\Messenger.Client\Messenger.Client.csproj", "{6BB217EB-3757-4866-B259-BD6DB8DDAAD5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1453C8FB-EE1C-4353-9394-C4DE05F25190}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{07B5ABEC-6FB1-4DA6-848D-66C8738D0728}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.Client.Sample", "samples\Messenger.Client.Sample\Messenger.Client.Sample.csproj", "{FB4F702B-E64F-4367-AFB8-D5AA37FC795A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.Client.Tests", "tests\messengers\Messenger.Client.Tests\Messenger.Client.Tests.csproj", "{38165A5C-854B-4D10-BDA3-FB0B026C8554}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.WebHooks", "src\messengers\Messenger.WebHooks\Messenger.WebHooks.csproj", "{788080A7-13D2-49A0-945F-37C801AE1D0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.WebHooks.Sample", "samples\messengers\Messenger.WebHooks.Sample\Messenger.WebHooks.Sample.csproj", "{A7C39D7E-746D-4787-B409-BBE1AE50B5BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6BB217EB-3757-4866-B259-BD6DB8DDAAD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BB217EB-3757-4866-B259-BD6DB8DDAAD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BB217EB-3757-4866-B259-BD6DB8DDAAD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BB217EB-3757-4866-B259-BD6DB8DDAAD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB4F702B-E64F-4367-AFB8-D5AA37FC795A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB4F702B-E64F-4367-AFB8-D5AA37FC795A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB4F702B-E64F-4367-AFB8-D5AA37FC795A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB4F702B-E64F-4367-AFB8-D5AA37FC795A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38165A5C-854B-4D10-BDA3-FB0B026C8554}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38165A5C-854B-4D10-BDA3-FB0B026C8554}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38165A5C-854B-4D10-BDA3-FB0B026C8554}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38165A5C-854B-4D10-BDA3-FB0B026C8554}.Release|Any CPU.Build.0 = Release|Any CPU
+		{788080A7-13D2-49A0-945F-37C801AE1D0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{788080A7-13D2-49A0-945F-37C801AE1D0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{788080A7-13D2-49A0-945F-37C801AE1D0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{788080A7-13D2-49A0-945F-37C801AE1D0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7C39D7E-746D-4787-B409-BBE1AE50B5BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7C39D7E-746D-4787-B409-BBE1AE50B5BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7C39D7E-746D-4787-B409-BBE1AE50B5BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7C39D7E-746D-4787-B409-BBE1AE50B5BD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6BB217EB-3757-4866-B259-BD6DB8DDAAD5} = {8B168B46-BDAA-4A89-AAA5-923E980DF7D7}
+		{FB4F702B-E64F-4367-AFB8-D5AA37FC795A} = {07B5ABEC-6FB1-4DA6-848D-66C8738D0728}
+		{38165A5C-854B-4D10-BDA3-FB0B026C8554} = {1453C8FB-EE1C-4353-9394-C4DE05F25190}
+		{788080A7-13D2-49A0-945F-37C801AE1D0D} = {8B168B46-BDAA-4A89-AAA5-923E980DF7D7}
+		{A7C39D7E-746D-4787-B409-BBE1AE50B5BD} = {07B5ABEC-6FB1-4DA6-848D-66C8738D0728}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {713C7940-2634-4C55-A6AF-9A4779CBFCEF}
+	EndGlobalSection
+EndGlobal
