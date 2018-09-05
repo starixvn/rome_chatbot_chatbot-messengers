@@ -13,11 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{07B5
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.Client.Sample", "samples\Messenger.Client.Sample\Messenger.Client.Sample.csproj", "{FB4F702B-E64F-4367-AFB8-D5AA37FC795A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.Client.Tests", "tests\messengers\Messenger.Client.Tests\Messenger.Client.Tests.csproj", "{38165A5C-854B-4D10-BDA3-FB0B026C8554}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.Client.Tests", "tests\Messenger.Client.Tests\Messenger.Client.Tests.csproj", "{38165A5C-854B-4D10-BDA3-FB0B026C8554}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.WebHooks", "src\messengers\Messenger.WebHooks\Messenger.WebHooks.csproj", "{788080A7-13D2-49A0-945F-37C801AE1D0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.WebHooks", "src\Messenger.WebHooks\Messenger.WebHooks.csproj", "{788080A7-13D2-49A0-945F-37C801AE1D0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.WebHooks.Sample", "samples\messengers\Messenger.WebHooks.Sample\Messenger.WebHooks.Sample.csproj", "{A7C39D7E-746D-4787-B409-BBE1AE50B5BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.WebHooks.Sample", "samples\Messenger.WebHooks.Sample\Messenger.WebHooks.Sample.csproj", "{A7C39D7E-746D-4787-B409-BBE1AE50B5BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
