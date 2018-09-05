@@ -225,6 +225,7 @@
     </None>
     <Content Include="Web.local.config" />
     <Content Include="Web.local2.config" />
+    <Content Include="Web.uat.config" />
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
