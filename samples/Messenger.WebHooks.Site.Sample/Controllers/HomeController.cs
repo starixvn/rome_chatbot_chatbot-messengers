@@ -23,7 +23,7 @@ namespace Messenger.WebHooks.Site.Sample.Controllers
         [HttpPost]
         public ActionResult Index(CommandInfo commandInfo)
         {
-            var restClient = new RestClientHelper(RestClientHelper.CreateDefaultClient(commandInfo.WebhookUrl), new JwtHelper(), AppSettings.Messenger);
+            var restClient = new RestClientHelper(RestClientHelper.CreateDefaultClient(commandInfo.WebhookUrl), new JwtHelper(), Messenger.WebHooks.Site.Sample.Configurations.AppSettings.Messenger);
 
             var command = commandInfo.CommandInfoList.Keys.Contains(commandInfo.Command) 
                 ? commandInfo.CommandInfoList[commandInfo.Command].Replace("{0}", commandInfo.LetstalkId)
