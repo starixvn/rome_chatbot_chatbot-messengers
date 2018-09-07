@@ -62,17 +62,22 @@
 #pragma warning disable S3963 // "static" fields should be initialized inline
         static AppSettings()
         {
-            var currentDirectory = Directory.GetCurrentDirectory();
-            var configFileName = "appsettings.json";
-
-            if (File.Exists(Path.Combine(currentDirectory, configFileName)))
+            try
             {
-                var builder = new ConfigurationBuilder()
-                    .SetBasePath(currentDirectory)
-                    .AddJsonFile(configFileName);
+                var currentDirectory = Directory.GetCurrentDirectory();
+                var configFileName = "appsettings.json";
 
-                configurationRoot = builder.Build();
+                if (File.Exists(Path.Combine(currentDirectory, configFileName)))
+                {
+                    var builder = new ConfigurationBuilder()
+                        .SetBasePath(currentDirectory)
+                        .AddJsonFile(configFileName);
+
+                    configurationRoot = builder.Build();
+                }
             }
+            catch(Exception ex)
+            { }
 
             var botId = GetConfigs("MessengerAPIClient:BotAccountId");
             var messengerBotAccountId = int.Parse(botId);
