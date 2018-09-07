@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.WebHooks", "src\M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.WebHooks.Sample", "samples\Messenger.WebHooks.Sample\Messenger.WebHooks.Sample.csproj", "{A7C39D7E-746D-4787-B409-BBE1AE50B5BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.WebHooks.Site.Sample", "samples\Messenger.WebHooks.Site.Sample\Messenger.WebHooks.Site.Sample.csproj", "{5B812C5A-5ABC-481C-9E05-C47755EB44AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{A7C39D7E-746D-4787-B409-BBE1AE50B5BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7C39D7E-746D-4787-B409-BBE1AE50B5BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7C39D7E-746D-4787-B409-BBE1AE50B5BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B812C5A-5ABC-481C-9E05-C47755EB44AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B812C5A-5ABC-481C-9E05-C47755EB44AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B812C5A-5ABC-481C-9E05-C47755EB44AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B812C5A-5ABC-481C-9E05-C47755EB44AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{38165A5C-854B-4D10-BDA3-FB0B026C8554} = {1453C8FB-EE1C-4353-9394-C4DE05F25190}
 		{788080A7-13D2-49A0-945F-37C801AE1D0D} = {8B168B46-BDAA-4A89-AAA5-923E980DF7D7}
 		{A7C39D7E-746D-4787-B409-BBE1AE50B5BD} = {07B5ABEC-6FB1-4DA6-848D-66C8738D0728}
+		{5B812C5A-5ABC-481C-9E05-C47755EB44AA} = {07B5ABEC-6FB1-4DA6-848D-66C8738D0728}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {713C7940-2634-4C55-A6AF-9A4779CBFCEF}

@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewBag.Title = "Webhook Testing Page";
+}
+
+@model Messenger.WebHooks.Site.Sample.Models.CommandInfo
+
+<h2>Webhook Testing Page</h2>
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.WebhookUrl, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-12">
+            @Html.DropDownListFor(model => model.WebhookUrl, new SelectList(Model.WebhookUrls), new { @class = "form-control" })
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Command, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-12">
+            @Html.DropDownListFor(model => model.Command, new SelectList(Model.CommandInfoList.Keys), new { @class = "form-control" })
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.LetstalkId, new { @class = "col-sm-2 control-label" })
+        <div class="col-sm-12">
+            @Html.TextBoxFor(model => model.LetstalkId, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <input type="submit" class="btn-sm" value="Submit" />
+
+    if (Model.Result != null)
+    {
+        <h4>
+            @if (Model.Result.IsOk)
+            {
+                @: Send Successfully!
+            }
+            else
+            {
+                @: Send Failed!
+                <br />
+                @Model.Result.Message
+            }
+        </h4>
+    }
+
+}

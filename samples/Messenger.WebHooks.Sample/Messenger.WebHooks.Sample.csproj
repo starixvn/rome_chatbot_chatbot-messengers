@@ -62,5 +62,11 @@
     <None Include="Messenger.WebHooks.Sample.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Messenger.Client\Messenger.Client.csproj">
+      <Project>{6bb217eb-3757-4866-b259-bd6db8ddaad5}</Project>
+      <Name>Messenger.Client</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

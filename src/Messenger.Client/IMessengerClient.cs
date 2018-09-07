@@ -17,6 +17,8 @@
 
         Task<Result> SetWebhookAsync(string url);
 
+        Task<Result> SetAvatarAsync(string image);
+
         Task<Result> SetWelcomeMessageAsync(string message);
 
         Task<Result> SetAutoReplyAsync(string message, bool enabled, DateTime startTime, DateTime endTime);

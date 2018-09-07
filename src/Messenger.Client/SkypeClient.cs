@@ -78,5 +78,10 @@
 
             return response.Data;
         }
+
+        public Task<Result> SetAvatarAsync(string image)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

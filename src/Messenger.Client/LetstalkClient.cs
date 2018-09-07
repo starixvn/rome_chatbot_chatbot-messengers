@@ -186,5 +186,19 @@
 
             return result;
         }
+
+        public async Task<Result> SetAvatarAsync(string image)
+        {
+            ValidateInputParam(nameof(image), image);
+
+            var result = await restClientHelper.ExecutePostAsync<Result>(
+                $"bot/upload_avatar_image/{botId}",
+                new Dictionary<string, object>
+                {
+                    { "image", image }
+                });
+
+            return result;
+        }
     }
 }
