@@ -3,8 +3,11 @@
     using System;
     using System.Collections.Specialized;
     using System.Configuration;
+
+#if NETSTANDARD2_0
     using System.IO;
     using Microsoft.Extensions.Configuration;
+#endif
 
     public interface IMessengerSettings
     {
@@ -54,30 +57,26 @@
 
     public static class AppSettings
     {
-        /// <summary>
-        /// Support for .net core
-        /// </summary>
+#if NETSTANDARD2_0
         private readonly static IConfigurationRoot configurationRoot;
+#endif
 
 #pragma warning disable S3963 // "static" fields should be initialized inline
         static AppSettings()
         {
-            try
+#if NETSTANDARD2_0
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var configFileName = "appsettings.json";
+
+            if (File.Exists(Path.Combine(currentDirectory, configFileName)))
             {
-                var currentDirectory = Directory.GetCurrentDirectory();
-                var configFileName = "appsettings.json";
+                var builder = new ConfigurationBuilder()
+                    .SetBasePath(currentDirectory)
+                    .AddJsonFile(configFileName);
 
-                if (File.Exists(Path.Combine(currentDirectory, configFileName)))
-                {
-                    var builder = new ConfigurationBuilder()
-                        .SetBasePath(currentDirectory)
-                        .AddJsonFile(configFileName);
-
-                    configurationRoot = builder.Build();
-                }
+                configurationRoot = builder.Build();
             }
-            catch(Exception ex)
-            { }
+#endif
 
             var botId = GetConfigs("MessengerAPIClient:BotAccountId");
             var messengerBotAccountId = int.Parse(botId);
@@ -99,16 +98,14 @@
 
         private static string GetConfigs(string configName)
         {
-            var configValue = configurationRoot == null
-                ? Configs[configName]
-                : configurationRoot[configName];
-
+#if NETSTANDARD2_0
+            var configValue = configurationRoot[configName];
+#else
+            var configValue = Configs[configName];
+#endif
             return configValue ?? throw new InvalidOperationException($"Missing config for {configName}");
         }
 
-        /// <summary>
-        /// Support for .net framework
-        /// </summary>
         internal static NameValueCollection Configs { get; set; } = ConfigurationManager.AppSettings;
 
         public static IMessengerSettings Messenger { get; private set; }

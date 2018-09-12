@@ -5,6 +5,7 @@ namespace Messenger.Client.Sample
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Configuration;
+    using System.Diagnostics;
     using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
     using Newtonsoft.Json;
@@ -20,8 +21,13 @@ namespace Messenger.Client.Sample
             //var result1 = letstalkClient.SetAvatarAsync("data:image/png;base64,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").Result;
             try
             {
-                var result = letstalkClient.PushAsync("starix_test96", "test message 1").Result;
+                Stopwatch stopWatch = Stopwatch.StartNew();
 
+                var result = letstalkClient.PushAsync("starix_test408", "test message 1").Result;
+
+                stopWatch.Stop();
+
+                Console.WriteLine("Elapsed time {0} ms", stopWatch.ElapsedMilliseconds);
                 Console.WriteLine(JsonConvert.SerializeObject(result, Formatting.Indented));
             }
             catch(Exception ex)

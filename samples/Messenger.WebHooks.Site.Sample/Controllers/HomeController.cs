@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Messenger.Client.Configurations;
 using Messenger.Client.Helpers;
@@ -19,13 +18,12 @@ namespace Messenger.WebHooks.Site.Sample.Controllers
             return View(commandInfo);
         }
 
-
         [HttpPost]
         public ActionResult Index(CommandInfo commandInfo)
         {
-            var restClient = new RestClientHelper(RestClientHelper.CreateDefaultClient(commandInfo.WebhookUrl), new JwtHelper(), Messenger.WebHooks.Site.Sample.Configurations.AppSettings.Messenger);
+            var restClient = new RestClientHelper(RestClientHelper.CreateDefaultClient(commandInfo.WebhookUrl), new JwtHelper(), AppSettings.Messenger);
 
-            var command = commandInfo.CommandInfoList.Keys.Contains(commandInfo.Command) 
+            var command = commandInfo.CommandInfoList.Keys.Contains(commandInfo.Command)
                 ? commandInfo.CommandInfoList[commandInfo.Command].Replace("{0}", commandInfo.LetstalkId)
                 : commandInfo.Command;
 
@@ -46,7 +44,7 @@ namespace Messenger.WebHooks.Site.Sample.Controllers
 
                 commandInfo.Result = new Result { Status = 1 };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 commandInfo.Result = new Result { Status = 2, Message = ex.Message };
             }
