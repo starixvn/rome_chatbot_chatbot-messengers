@@ -1,7 +1,6 @@
 ﻿namespace Messenger.WebHooks.WebHookReceivers
 {
     using System;
-    using System.Configuration;
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -20,16 +19,18 @@
         public override string Name => ReceiverName;
 
         private readonly IJwtHelper jwtHelper;
-        private readonly string SecureKey = ConfigurationManager.AppSettings["MessengerAPIClient:SecureKey"];
+        private readonly IMessengerSettings messengerSettings;
 
-        public LetstalkWebHookReceiver() : this(null)
+        public LetstalkWebHookReceiver() : this(null, null)
         {
         }
 
         public LetstalkWebHookReceiver(
-            IJwtHelper jwtHelper)
+            IJwtHelper jwtHelper,
+            IMessengerSettings messengerSettings)
         {
             this.jwtHelper = jwtHelper ?? DependencyResolver.GetInstance<IJwtHelper>();
+            this.messengerSettings = messengerSettings ?? AppSettings.Messenger;
         }
 
         public override async Task<HttpResponseMessage> ReceiveAsync(
@@ -89,7 +90,7 @@
 
         private JObject VerifyAndReadBodyData(string token)
         {
-            var rawData = jwtHelper.Decode(SecureKey, token);
+            var rawData = jwtHelper.Decode(messengerSettings.SecureKey, token);
 
             return JObject.Parse(rawData);
         }

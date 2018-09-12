@@ -1,9 +1,9 @@
 ﻿namespace Messenger.WebHooks.WebHookReceivers.LetstalkEventHandlers
 {
-    using System.Configuration;
     using System.Threading.Tasks;
     using Chatbot.Client.Services;
     using Fanex.Logging;
+    using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
     using Messenger.WebHooks.App_Start;
     using Messenger.WebHooks.Models;
@@ -15,20 +15,23 @@
         private readonly CommandService commandService;
         private readonly ICryptographyHelper cryptographyHelper;
         private readonly ILogger logger;
+        private readonly IMessengerSettings messengerSettings;
         private const string eventTypeName = "message";
 
-        public MessageEventHandler() : this(null, null, null)
+        public MessageEventHandler() : this(null, null, null, null)
         {
         }
 
         public MessageEventHandler(
             CommandService commandService,
             ICryptographyHelper cryptographyHelper = null,
-            ILogger logger = null)
+            ILogger logger = null,
+            IMessengerSettings messengerSettings = null)
         {
             this.commandService = commandService ?? DependencyResolver.GetInstance<CommandService>();
             this.cryptographyHelper = cryptographyHelper ?? DependencyResolver.GetInstance<ICryptographyHelper>();
             this.logger = logger ?? Logger.Log;
+            this.messengerSettings = messengerSettings ?? AppSettings.Messenger;
         }
 
         protected override string EventTypeName => eventTypeName;
@@ -37,7 +40,7 @@
         {
             var messageContent = cryptographyHelper.Decrypt(
                 hookEvent.PayloadObject.HashContent,
-                ConfigurationManager.AppSettings["MessengerAPIClient:ChatKey"],
+                messengerSettings.ChatKey,
                 hookEvent.PayloadObject.HashContentKey);
 
             var command = JsonConvert.DeserializeObject<MessageContent>(messageContent).Msg;
