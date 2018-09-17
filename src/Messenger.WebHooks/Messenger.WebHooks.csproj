@@ -47,7 +47,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Chatbot.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Chatbot.Client.1.0.0-beta8-72\lib\net461\Chatbot.Client.dll</HintPath>
+      <HintPath>..\..\packages\Chatbot.Client.1.0.0-beta8-82\lib\net461\Chatbot.Client.dll</HintPath>
     </Reference>
     <Reference Include="Chatbot.Client.Transport, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Chatbot.Client.Transport.1.0.0-beta3\lib\net461\Chatbot.Client.Transport.dll</HintPath>
