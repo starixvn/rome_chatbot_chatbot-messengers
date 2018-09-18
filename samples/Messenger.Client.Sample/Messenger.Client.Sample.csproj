@@ -14,11 +14,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Messenger.Client" Version="1.0.0-beta5" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Messenger.Client\Messenger.Client.csproj" />
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
