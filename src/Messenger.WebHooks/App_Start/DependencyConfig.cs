@@ -1,11 +1,10 @@
 ﻿namespace Messenger.WebHooks.App_Start
 {
     using Chatbot.Client.Services;
-    using Fanex.Bot.Client;
     using Fanex.Logging;
-    using Messenger.Client;
     using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
+    using Messenger.WebHooks.Configurations;
     using SimpleInjector;
 
     public static class DependencyConfig
@@ -18,6 +17,7 @@
             container.RegisterSingleton<ICryptographyHelper, CryptographyHelper>();
             container.RegisterSingleton<CommandService, CommandServiceImpl>();
             container.RegisterInstance(Logger.Log);
+            container.RegisterInstance(Configurations.AppSettings.Settings);
 
             container.Verify();
 
