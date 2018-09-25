@@ -207,6 +207,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Models\EventSource.cs" />
     <Compile Include="Models\HookEvent.cs" />
     <Compile Include="Models\MessageContent.cs" />
