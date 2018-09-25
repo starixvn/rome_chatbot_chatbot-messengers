@@ -1,4 +1,6 @@
-﻿namespace Messenger.Client.Models
+﻿[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Messenger.Client.Tests")]
+
+namespace Messenger.Client.Models
 {
     using System.Collections.Generic;
     using Newtonsoft.Json;
@@ -37,6 +39,7 @@
         [JsonProperty(PropertyName = "avatar_url")]
 #pragma warning disable S3996 // URI properties should not be strings
         public string AvatarUrl { get; set; }
+
 #pragma warning restore S3996 // URI properties should not be strings
 
         [JsonProperty(PropertyName = "display_name")]
