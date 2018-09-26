@@ -2,6 +2,8 @@
 {
     using Fanex.Logging;
     using Fanex.Logging.RabbitMQ;
+    using Messenger.Client;
+    using Messenger.Client.Configurations;
     using Messenger.LetstalkApiMonitor.Configurations;
     using Messenger.LetstalkApiMonitor.Services;
     using Microsoft.AspNetCore.Builder;
@@ -32,6 +34,16 @@
                     .SetDefaultLogCategory(Configuration["Fanex.Logging:DefaultCategory"])
                     .Use(new RabbitMQLogging(Configuration["Fanex.Logging:RabbitMQConnectionStrings"]));
             services.AddSingleton(Logger.Log);
+
+            var letstalkSetting = new LetstalkSettings(
+                Configuration["MessengerAPIClient:ApiEndpoint"],
+                Configuration["MessengerAPIClient:ApiKey"],
+                Configuration["MessengerAPIClient:SecureKey"],
+                Configuration["MessengerAPIClient:ChatKey"],
+                int.Parse(Configuration["MessengerAPIClient:BotAccountId"]),
+                Configuration["MessengerAPIClient:BotUserId"]);
+
+            services.AddSingleton<IMessengerClient>(new LetstalkClient(letstalkSetting));
 
             //configure background task
             services.AddHostedService<LetstalkApiMonitorService>();

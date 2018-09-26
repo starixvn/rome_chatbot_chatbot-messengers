@@ -15,12 +15,9 @@
 
   <ItemGroup>
     <PackageReference Include="Fanex.Logging.RabbitMQ" Version="1.0.0-beta8" />
+    <PackageReference Include="Messenger.Client" Version="1.0.0-beta5" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Messenger.Client\Messenger.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,7 +6,6 @@
     using System.Threading.Tasks;
     using Fanex.Logging;
     using Messenger.Client;
-    using Messenger.Client.Configurations;
     using Messenger.LetstalkApiMonitor.Configurations;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Options;
@@ -15,15 +14,16 @@
     public class LetstalkApiMonitorService : BackgroundService
     {
         private readonly ILogger logger;
-        private readonly LetstalkClient letstalkClient;
+        private readonly IMessengerClient letstalkClient;
         private readonly LetstalkApiMonitorSettings settings;
 
         public LetstalkApiMonitorService(
             ILogger logger,
+            IMessengerClient letstalkClient,
             IOptions<LetstalkApiMonitorSettings> settings)
         {
             this.logger = logger;
-            this.letstalkClient = new LetstalkClient(AppSettings.Messenger);
+            this.letstalkClient = letstalkClient;
             this.settings = settings?.Value
                 ?? throw new ArgumentNullException(nameof(settings));
         }
