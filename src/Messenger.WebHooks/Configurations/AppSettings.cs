@@ -52,8 +52,8 @@
 
         public static IWebhookSettings Settings { get; private set; }
 
-        public static string MonitorLetstalkId => Configs["MonitorLetstalkId"];
+        public static string MonitorLetstalkId => Configs["Webhook:MonitorLetstalkId"];
 
-        public static string HeathMonitorLogCategory => Configs["HeathMonitorLogCategory"];
+        public static string HeathMonitorLogCategory => Configs["Webhook:HeathMonitorLogCategory"];
     }
 }
