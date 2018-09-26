@@ -1,5 +1,6 @@
 ﻿namespace Messenger.WebHooks.WebHookReceivers.LetstalkEventHandlers
 {
+    using System;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -77,7 +78,7 @@
             if (hookEvent.PayloadObject.UserId == Configurations.AppSettings.MonitorLetstalkId)
             {
                 var message = new StringBuilder();
-                message.AppendLine("#LetstalkWebhook : OK");
+                message.AppendLine($"#LetstalkWebhook : OK on {DateTime.Now}");
                 message.Append(jsonMessage);
 
                 logger.Info(message.ToString(), Configurations.AppSettings.HeathMonitorLogCategory);

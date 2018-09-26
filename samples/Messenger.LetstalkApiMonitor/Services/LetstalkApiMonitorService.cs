@@ -42,7 +42,7 @@
                     var result = await letstalkClient.PushAsync(settings.AccountId, "This is health check message");
 
                     var message = new StringBuilder();
-                    message.AppendLine("#LetstalkAPI : " + (result.IsOk ? "OK" : "Failed"));
+                    message.AppendLine("#LetstalkAPI : " + (result.IsOk ? "OK" : "Failed") + " on " + DateTime.Now);
                     message.Append(JsonConvert.SerializeObject(result, Formatting.Indented));
 
                     if (result.IsOk)
@@ -57,7 +57,7 @@
                 catch (Exception ex)
                 {
                     var message = new StringBuilder();
-                    message.AppendLine("#LetstalkAPI : Failed");
+                    message.AppendLine($"#LetstalkAPI : Failed on {DateTime.Now}");
                     message.Append(ex.Message);
 
                     logger.Error(message.ToString(), ex);
