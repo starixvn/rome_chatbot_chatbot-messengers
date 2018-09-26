@@ -1,18 +1,12 @@
 ﻿namespace Messenger.WebHooks.WebHookReceivers.LetstalkEventHandlers
 {
     using System.Threading.Tasks;
-    using Messenger.Client;
-    using Messenger.WebHooks.App_Start;
     using Messenger.WebHooks.Models;
     using Microsoft.AspNet.WebHooks;
 
     public class HealthCheckEventHandler : BaseLetstalkEventHandler
     {
         private const string eventTypeName = "health_check";
-
-        public HealthCheckEventHandler()
-        {
-        }
 
         protected override string EventTypeName => eventTypeName;
 

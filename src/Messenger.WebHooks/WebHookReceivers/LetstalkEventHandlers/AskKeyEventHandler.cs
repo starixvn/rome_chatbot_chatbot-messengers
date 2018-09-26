@@ -1,18 +1,12 @@
 ﻿namespace Messenger.WebHooks.WebHookReceivers.LetstalkEventHandlers
 {
     using System.Threading.Tasks;
-    using Messenger.Client;
-    using Messenger.WebHooks.App_Start;
     using Messenger.WebHooks.Models;
     using Microsoft.AspNet.WebHooks;
 
     public class AskKeyEventHandler : BaseLetstalkEventHandler
     {
         private const string eventTypeName = "ask_key";
-
-        public AskKeyEventHandler()
-        {
-        }
 
         protected override string EventTypeName => eventTypeName;
 

@@ -15,7 +15,9 @@
         public static T GetInstance<T>() where T : class
         {
             if (Container == null)
+            {
                 throw new InvalidOperationException("Cannot resolve dependencies before the container has been initialized.");
+            }
 
             return Container.GetInstance<T>();
         }

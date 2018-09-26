@@ -36,7 +36,9 @@
         {
             ValidateInputParam(nameof(accountId), accountId);
 
+#pragma warning disable S3216 // "ConfigureAwait(false)" should be used
             var result = await restClientHelper.ExecuteGetAsync<ProfileResult>($"bot/get_profile/{botId}/user/{accountId}");
+#pragma warning restore S3216 // "ConfigureAwait(false)" should be used
 
             if (result.IsOk)
             {
