@@ -30,12 +30,12 @@
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            logger.Debug($"Messenger Scheduler Service is starting.");
-            stoppingToken.Register(() => logger.Debug($"#1 Messenger Scheduler Service is stopping."));
+            logger.Debug($"Letstalk API Monitor Service is starting.");
+            stoppingToken.Register(() => logger.Debug($"#1 Letstalk API Monitor Service is stopping."));
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                logger.Debug($"Messenger Scheduler Service is doing background work.");
+                logger.Debug($"Letstalk API Monitor Service is doing background work.");
 
                 try
                 {
