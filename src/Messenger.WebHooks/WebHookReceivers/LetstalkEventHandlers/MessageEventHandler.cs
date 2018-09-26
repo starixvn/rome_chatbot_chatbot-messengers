@@ -1,6 +1,7 @@
 ﻿namespace Messenger.WebHooks.WebHookReceivers.LetstalkEventHandlers
 {
     using System.Linq;
+    using System.Text;
     using System.Threading.Tasks;
     using Chatbot.Client.Services;
     using Fanex.Logging;
@@ -64,14 +65,25 @@
                 return;
             }
 
-            logger.Info(JsonConvert.SerializeObject(
+            var jsonMessage = JsonConvert.SerializeObject(
                 new
                 {
                     command,
                     MessengerType,
                     hookEvent
-                }, 
-                Formatting.Indented));
+                },
+                Formatting.Indented);
+
+            if (hookEvent.PayloadObject.UserId == Configurations.AppSettings.MonitorLetstalkId)
+            {
+                var message = new StringBuilder();
+                message.AppendLine("#LetstalkWebhook : OK");
+                message.Append(jsonMessage);
+
+                logger.Info(message.ToString(), Configurations.AppSettings.HeathMonitorLogCategory);
+            }
+
+            logger.Info(jsonMessage);
         }
     }
 }
