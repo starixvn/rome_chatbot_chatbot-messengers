@@ -1,6 +1,6 @@
-﻿namespace Messenger.SchedulerService.Configurations
+﻿namespace Messenger.LetstalkApiMonitor.Configurations
 {
-    public class SchedulerServiceSettings
+    public class LetstalkApiMonitorSettings
     {
         public int WorkingIntervalTime { get; set; }
 

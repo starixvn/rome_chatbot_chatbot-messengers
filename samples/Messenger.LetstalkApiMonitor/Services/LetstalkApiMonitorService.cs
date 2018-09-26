@@ -1,4 +1,4 @@
-﻿namespace Messenger.SchedulerService.Services
+﻿namespace Messenger.LetstalkApiMonitor.Services
 {
     using System;
     using System.Text;
@@ -7,27 +7,25 @@
     using Fanex.Logging;
     using Messenger.Client;
     using Messenger.Client.Configurations;
-    using Messenger.SchedulerService.Configurations;
+    using Messenger.LetstalkApiMonitor.Configurations;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
 
-    public class SchedulerService : BackgroundService
+    public class LetstalkApiMonitorService : BackgroundService
     {
         private readonly ILogger logger;
-
-        private readonly SchedulerServiceSettings settings;
         private readonly LetstalkClient letstalkClient;
+        private readonly LetstalkApiMonitorSettings settings;
 
-        public SchedulerService(
-            IOptions<SchedulerServiceSettings> settings,
-            ILogger logger)
+        public LetstalkApiMonitorService(
+            ILogger logger,
+            IOptions<LetstalkApiMonitorSettings> settings)
         {
-            this.settings = settings?.Value
-                ?? throw new ArgumentNullException(nameof(settings));
-
             this.logger = logger;
             this.letstalkClient = new LetstalkClient(AppSettings.Messenger);
+            this.settings = settings?.Value
+                ?? throw new ArgumentNullException(nameof(settings));
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -41,7 +39,7 @@
 
                 try
                 {
-                    var result = await letstalkClient.PushAsync(settings.AccountId, "test message 1");
+                    var result = await letstalkClient.PushAsync(settings.AccountId, "This is health check message");
 
                     var message = new StringBuilder();
                     message.AppendLine("#LetstalkAPI : " + (result.IsOk ? "Ok" : "Failed"));

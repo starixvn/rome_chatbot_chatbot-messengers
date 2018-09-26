@@ -1,14 +1,15 @@
-﻿using Fanex.Logging;
-using Fanex.Logging.RabbitMQ;
-using Messenger.SchedulerService.Configurations;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Messenger.SchedulerService
+﻿namespace Messenger.LetstalkApiMonitor
 {
+    using Fanex.Logging;
+    using Fanex.Logging.RabbitMQ;
+    using Messenger.LetstalkApiMonitor.Configurations;
+    using Messenger.LetstalkApiMonitor.Services;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -23,7 +24,7 @@ namespace Messenger.SchedulerService
         public void ConfigureServices(IServiceCollection services)
         {
             // configure settings
-            services.Configure<SchedulerServiceSettings>(Configuration);
+            services.Configure<LetstalkApiMonitorSettings>(Configuration);
             services.AddOptions();
 
             // configure Fanex.Logging
@@ -33,7 +34,7 @@ namespace Messenger.SchedulerService
             services.AddSingleton(Logger.Log);
 
             //configure background task
-            services.AddHostedService<Services.SchedulerService>();
+            services.AddHostedService<LetstalkApiMonitorService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,7 +47,7 @@ namespace Messenger.SchedulerService
 
             app.Run(async (context) =>
             {
-                await context.Response.WriteAsync("Hello World!");
+                await context.Response.WriteAsync("Letstalk API Monitor has been started!");
             });
         }
     }
