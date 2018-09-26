@@ -59,13 +59,6 @@
 
         private void LogEvent(HookEvent hookEvent, string command)
         {
-            if (webhookSettings.LoggingMessengerUsernames.Any()
-                && !string.IsNullOrWhiteSpace(hookEvent.PayloadObject.UserId)
-                && !webhookSettings.LoggingMessengerUsernames.Contains(hookEvent.PayloadObject.UserId))
-            {
-                return;
-            }
-
             var jsonMessage = JsonConvert.SerializeObject(
                 new
                 {
@@ -82,6 +75,13 @@
                 message.Append(jsonMessage);
 
                 logger.Info(message.ToString(), Configurations.AppSettings.HeathMonitorLogCategory);
+            }
+
+            if (webhookSettings.LoggingMessengerUsernames.Any()
+                && !string.IsNullOrWhiteSpace(hookEvent.PayloadObject.UserId)
+                && !webhookSettings.LoggingMessengerUsernames.Contains(hookEvent.PayloadObject.UserId))
+            {
+                return;
             }
 
             logger.Info(jsonMessage);

@@ -1,6 +1,7 @@
 ﻿namespace Messenger.WebHooks.Configurations
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Configuration;
@@ -19,7 +20,7 @@
             string loggingMessengerUsernames)
         {
             WhiteListIPs = whiteListIPs.Split(',');
-            LoggingMessengerUsernames = loggingMessengerUsernames.Split(',');
+            LoggingMessengerUsernames = loggingMessengerUsernames.Split(',').Where(name => !string.IsNullOrWhiteSpace(name));
         }
 
         public IEnumerable<string> WhiteListIPs { get; }

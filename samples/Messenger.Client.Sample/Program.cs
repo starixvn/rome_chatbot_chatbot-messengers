@@ -23,7 +23,7 @@ namespace Messenger.Client.Sample
             //{
             //    Stopwatch stopWatch = Stopwatch.StartNew();
 
-            //    var result = letstalkClient.PushAsync("starix_test408", "test message 1").Result;
+                var result = letstalkClient.PushAsync("starix_test500", "test message 1").Result;
 
             //    stopWatch.Stop();
 
@@ -45,7 +45,7 @@ namespace Messenger.Client.Sample
             //Console.WriteLine($"Request: Push, response: {JsonConvert.SerializeObject(profile)}");
 
             //var result = letstalkClient.setidd(botId, new List<string> { "ricky.nguyen" }, "----------2323------------------------------------------------");
-            var result1 = letstalkClient.ChangeDisplayNameAsync("Atom").GetAwaiter().GetResult();
+            //var result1 = letstalkClient.ChangeDisplayNameAsync("Atom").GetAwaiter().GetResult();
 
             //Console.WriteLine($"Request: ChangeDisplayName, response: {JsonConvert.SerializeObject(result1)}");
 
