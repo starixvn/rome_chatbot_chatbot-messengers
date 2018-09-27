@@ -10,20 +10,16 @@
         {
             base.OnException(actionExecutedContext);
 
-            if(actionExecutedContext.Exception is ChatbotClientException)
+            if (actionExecutedContext.Exception is ChatbotClientException)
             {
                 var chatbotClientException = actionExecutedContext.Exception as ChatbotClientException;
-                if(chatbotClientException.IsServiceNotAvailable)
+                if (chatbotClientException.IsServiceNotAvailable)
                 {
                     return;
                 }
             }
 
-            ExceptionHandler.Handle(
-                                actionExecutedContext.Exception
-                                // To Write Custom Data
-                                // new Dictionary<string, object> { ["user id"] = 1111111 }
-                                );
+            ExceptionHandler.Handle(actionExecutedContext.Exception);
         }
     }
 }

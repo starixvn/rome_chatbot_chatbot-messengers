@@ -54,7 +54,7 @@
                 && HttpContext.Current.Request != null)
             {
                 var userIP = GetClientIP(HttpContext.Current.Request.ServerVariables);
-                if(!webhookSettings
+                if (!webhookSettings
                     .WhiteListIPs
                     .Any(ip => userIP.Contains(ip)))
                 {
@@ -75,8 +75,6 @@
 
             return CreateBadMethodResponse(request);
         }
-
-
 
         private async Task<HttpResponseMessage> HandleEvent(string id, HttpRequestContext context, HttpRequestMessage request)
         {
