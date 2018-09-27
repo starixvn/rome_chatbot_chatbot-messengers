@@ -200,7 +200,7 @@
             // Assert
             restClientHelper.Received().ExecutePostAsync<Result>(
                 Arg.Is($"bot/set_webhook/{messengerSettings.BotAccountId}"),
-                Arg.Any<Dictionary<string, object>>());
+                Arg.Is<Dictionary<string, object>>(d => d["url"].Equals(url)));
         }
 
         [Theory]
@@ -225,14 +225,14 @@
             // Assert
             restClientHelper.Received().ExecutePostAsync<Result>(
                 Arg.Is($"bot/set_welcome_msg/{messengerSettings.BotAccountId}"),
-                Arg.Any<Dictionary<string, object>>());
+                Arg.Is<Dictionary<string, object>>(d => d["message"].Equals(message)));
         }
 
         [Theory]
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
-        public void ChangeDisplayNameAsync_MessageIsNullOrWhiteSpace_ThrowsArgumentNullException(string botName)
+        public void ChangeDisplayNameAsync_BotNameIsNullOrWhiteSpace_ThrowsArgumentNullException(string botName)
         {
             // Act & Assert
             Assert.ThrowsAsync<ArgumentNullException>(() => letstalkClient.ChangeDisplayNameAsync(botName));
@@ -250,7 +250,65 @@
             // Assert
             restClientHelper.Received().ExecutePutAsync<Result>(
                 Arg.Is($"bot/change_display_name/{messengerSettings.BotAccountId}"),
-                Arg.Any<Dictionary<string, object>>());
+                Arg.Is<Dictionary<string, object>>(d => d["display_name"].Equals(botName)));
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void SetAutoReplyAsync_MessageIsNullOrWhiteSpace_ThrowsArgumentNullException(string message)
+        {
+            // Act & Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => letstalkClient.SetAutoReplyAsync(message, true, DateTime.Now, DateTime.Now));
+        }
+
+        [Fact]
+        public void SetAutoReplyAsync_ValidMessage_CallsExecutePostAsync()
+        {
+            // Arrange
+            var message = "message";
+            var enable = true;
+            var startTime = DateTime.Now;
+            var endTime = DateTime.Now.AddHours(1);
+
+            // Act
+            letstalkClient.SetAutoReplyAsync(message, enable, startTime, endTime).ConfigureAwait(false);
+
+            // Assert
+            restClientHelper.Received().ExecutePostAsync<Result>(
+                Arg.Is($"bot/set_auto_reply/{messengerSettings.BotAccountId}"),
+                Arg.Is<Dictionary<string, object>>(
+                    d => d["auto_reply_message"].Equals(message)
+                        && d["enable"].Equals(1)
+                        && d["start_time"].Equals(new DateTimeOffset(startTime).ToUnixTimeMilliseconds())
+                        && d["duration"].Equals((endTime - startTime).TotalMinutes)
+                        && d["duration_type"].Equals(0)));
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void SetAvatarAsync_ImageIsNullOrWhiteSpace_ThrowsArgumentNullException(string image)
+        {
+            // Act & Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => letstalkClient.SetAvatarAsync(image));
+        }
+
+        [Fact]
+        public void SetAvatarAsync_ValidImage_CallsExecutePostAsync()
+        {
+            // Arrange
+            var image = "Image";
+
+            // Act
+            letstalkClient.SetAvatarAsync(image).ConfigureAwait(false);
+
+            // Assert
+            restClientHelper.Received().ExecutePostAsync<Result>(
+                Arg.Is($"bot/upload_avatar_image/{messengerSettings.BotAccountId}"),
+                Arg.Is<Dictionary<string, object>>(d => d["image"].Equals(image)));
         }
     }
 }
