@@ -177,5 +177,80 @@
                 Arg.Is(messengerSettings.ChatKey),
                 Arg.Is(hashContentKey));
         }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void SetWebhookAsync_UrlIsNullOrWhiteSpace_ThrowsArgumentNullException(string url)
+        {
+            // Act & Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => letstalkClient.SetWebhookAsync(url));
+        }
+
+        [Fact]
+        public void SetWebhookAsync_ValidUrl_CallsExecutePostAsync()
+        {
+            // Arrange
+            var url = "url";
+
+            // Act
+            letstalkClient.SetWebhookAsync(url);
+
+            // Assert
+            restClientHelper.Received().ExecutePostAsync<Result>(
+                Arg.Is($"bot/set_webhook/{messengerSettings.BotAccountId}"),
+                Arg.Any<Dictionary<string, object>>());
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void SetWelcomeMessageAsync_MessageIsNullOrWhiteSpace_ThrowsArgumentNullException(string message)
+        {
+            // Act & Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => letstalkClient.SetWelcomeMessageAsync(message));
+        }
+
+        [Fact]
+        public void SetWelcomeMessageAsync_ValidMessage_CallsExecutePostAsync()
+        {
+            // Arrange
+            var message = "message";
+
+            // Act
+            letstalkClient.SetWelcomeMessageAsync(message);
+
+            // Assert
+            restClientHelper.Received().ExecutePostAsync<Result>(
+                Arg.Is($"bot/set_welcome_msg/{messengerSettings.BotAccountId}"),
+                Arg.Any<Dictionary<string, object>>());
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void ChangeDisplayNameAsync_MessageIsNullOrWhiteSpace_ThrowsArgumentNullException(string botName)
+        {
+            // Act & Assert
+            Assert.ThrowsAsync<ArgumentNullException>(() => letstalkClient.ChangeDisplayNameAsync(botName));
+        }
+
+        [Fact]
+        public void ChangeDisplayNameAsync_ValidBotName_CallsExecutePutAsync()
+        {
+            // Arrange
+            var botName = "BotName";
+
+            // Act
+            letstalkClient.ChangeDisplayNameAsync(botName);
+
+            // Assert
+            restClientHelper.Received().ExecutePutAsync<Result>(
+                Arg.Is($"bot/change_display_name/{messengerSettings.BotAccountId}"),
+                Arg.Any<Dictionary<string, object>>());
+        }
     }
 }

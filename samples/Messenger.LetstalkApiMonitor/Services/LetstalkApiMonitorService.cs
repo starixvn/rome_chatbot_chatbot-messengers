@@ -39,10 +39,10 @@
 
                 try
                 {
-                    var result = await letstalkClient.PushAsync(settings.AccountId, "This is health check message");
+                    var result = await letstalkClient.PushAsync(settings.AccountId, $"Health check message at {DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")}");
 
                     var message = new StringBuilder();
-                    message.AppendLine("#LetstalkAPI : " + (result.IsOk ? "OK" : "Failed") + " on " + DateTime.Now);
+                    message.AppendLine("#LetstalkAPI : " + (result.IsOk ? "OK" : "Failed") + " at " + DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
                     message.Append(JsonConvert.SerializeObject(result, Formatting.Indented));
 
                     if (result.IsOk)
@@ -57,7 +57,7 @@
                 catch (Exception ex)
                 {
                     var message = new StringBuilder();
-                    message.AppendLine($"#LetstalkAPI : Failed on {DateTime.Now}");
+                    message.AppendLine($"#LetstalkAPI : Failed on {DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")}");
                     message.Append(ex.Message);
 
                     logger.Error(message.ToString(), ex);

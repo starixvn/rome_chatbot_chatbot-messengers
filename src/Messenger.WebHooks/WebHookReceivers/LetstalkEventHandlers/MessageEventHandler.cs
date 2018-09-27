@@ -71,7 +71,7 @@
             if (hookEvent.PayloadObject.UserId == Configurations.AppSettings.MonitorLetstalkId)
             {
                 var message = new StringBuilder();
-                message.AppendLine($"#LetstalkWebhook : OK on {DateTime.Now}");
+                message.AppendLine($"#LetstalkWebhook : OK at {DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")}");
                 message.Append(jsonMessage);
 
                 logger.Info(message.ToString(), Configurations.AppSettings.HeathMonitorLogCategory);
