@@ -36,14 +36,16 @@
             while (!stoppingToken.IsCancellationRequested)
             {
                 logger.Debug($"Letstalk API Monitor Service is doing background work.");
+                var healthCheckMessage = $"Health check message at {DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")}";
 
                 try
                 {
-                    var result = await letstalkClient.PushAsync(settings.AccountId, $"Health check message at {DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")}");
+                    var result = await letstalkClient.PushAsync(settings.AccountId, healthCheckMessage);
 
                     var message = new StringBuilder();
                     message.AppendLine("#LetstalkAPI : " + (result.IsOk ? "OK" : "Failed") + " at " + DateTime.Now.ToString("MM/dd/yyyy hh:mm tt"));
-                    message.Append(JsonConvert.SerializeObject(result, Formatting.Indented));
+                    message.AppendLine(healthCheckMessage);
+                    message.Append("Return Result: " + JsonConvert.SerializeObject(result, Formatting.Indented));
 
                     if (result.IsOk)
                     {
@@ -58,6 +60,7 @@
                 {
                     var message = new StringBuilder();
                     message.AppendLine($"#LetstalkAPI : Failed on {DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")}");
+                    message.AppendLine(healthCheckMessage);
                     message.Append(ex.Message);
 
                     logger.Error(message.ToString(), ex);
