@@ -30,7 +30,7 @@
         {
         }
 
-        public LetstalkWebHookReceiver(
+        internal LetstalkWebHookReceiver(
             IJwtHelper jwtHelper,
             IMessengerSettings messengerSettings,
             IWebhookSettings webhookSettings)
@@ -74,7 +74,6 @@
                 ////{
                 ////    return await WebHookVerification(id, request);
                 ////}
-
             }
             catch (Exception ex)
             {
