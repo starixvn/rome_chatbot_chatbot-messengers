@@ -18,7 +18,7 @@
 
     public class LetstalkWebHookReceiver : WebHookReceiver
     {
-        internal const string ReceiverName = "Letstalk";
+        internal const string ReceiverName = "letstalk";
 
         public override string Name => ReceiverName;
 
@@ -45,33 +45,41 @@
             HttpRequestContext context,
             HttpRequestMessage request)
         {
-            ValidateRequest(id, context, request);
-
-            ExceptionHandler.Handle(new Exception("Received Webhook Event"), System.Diagnostics.TraceEventType.Information);
-
-            if (webhookSettings.WhiteListIPs.Any()
-                && HttpContext.Current != null
-                && HttpContext.Current.Request != null)
+            try
             {
-                var userIP = GetClientIP(HttpContext.Current.Request.ServerVariables);
-                if (!webhookSettings
-                    .WhiteListIPs
-                    .Any(ip => userIP.Contains(ip)))
+                ValidateRequest(id, context, request);
+
+                ExceptionHandler.Handle(new Exception("Received Webhook Event"), System.Diagnostics.TraceEventType.Information);
+
+                if (webhookSettings.WhiteListIPs.Any()
+                    && HttpContext.Current != null
+                    && HttpContext.Current.Request != null)
                 {
-                    return await Task.FromResult(request.CreateErrorResponse(HttpStatusCode.Forbidden, "IP Restricted"));
+                    var userIP = GetClientIP(HttpContext.Current.Request.ServerVariables);
+                    if (!webhookSettings
+                        .WhiteListIPs
+                        .Any(ip => userIP.Contains(ip)))
+                    {
+                        return await Task.FromResult(request.CreateErrorResponse(HttpStatusCode.Forbidden, "IP Restricted"));
+                    }
                 }
-            }
 
-            if (request.Method == HttpMethod.Post)
+                if (request.Method == HttpMethod.Post)
+                {
+                    return await HandleEvent(id, context, request);
+                }
+
+                /// TODO: Creates a response to a WebHook verification GET request, should implement this for testing alive webhook
+                ////else if (request.Method == HttpMethod.Get)
+                ////{
+                ////    return await WebHookVerification(id, request);
+                ////}
+
+            }
+            catch (Exception ex)
             {
-                return await HandleEvent(id, context, request);
+                ExceptionHandler.Handle(ex);
             }
-
-            /// TODO: Creates a response to a WebHook verification GET request, should implement this for testing alive webhook
-            ////else if (request.Method == HttpMethod.Get)
-            ////{
-            ////    return await WebHookVerification(id, request);
-            ////}
 
             return CreateBadMethodResponse(request);
         }

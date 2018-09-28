@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
     using Chatbot.Client.Services;
     using Fanex.Logging;
+    using Fanex.Logging.Extensions.Web;
     using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
     using Messenger.WebHooks.App_Start;
@@ -45,16 +46,23 @@
 
         protected override async Task EnqueueAsync(WebHookQueueContext context, HookEvent hookEvent)
         {
-            var messageContent = cryptographyHelper.Decrypt(
-                hookEvent.PayloadObject.HashContent,
-                messengerSettings.ChatKey,
-                hookEvent.PayloadObject.HashContentKey);
+            try
+            {
+                var messageContent = cryptographyHelper.Decrypt(
+                    hookEvent.PayloadObject.HashContent,
+                    messengerSettings.ChatKey,
+                    hookEvent.PayloadObject.HashContentKey);
 
-            var command = JsonConvert.DeserializeObject<MessageContent>(messageContent).Msg;
+                var command = JsonConvert.DeserializeObject<MessageContent>(messageContent).Msg;
 
-            LogEvent(hookEvent, command);
+                LogEvent(hookEvent, command);
 
-            await commandService.Run(command, MessengerType, hookEvent.Source.UserId);
+                await commandService.Run(command, MessengerType, hookEvent.Source.UserId);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandler.Handle(ex);
+            }
         }
 
         private void LogEvent(HookEvent hookEvent, string command)
