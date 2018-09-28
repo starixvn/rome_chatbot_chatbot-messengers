@@ -110,7 +110,7 @@
 
         private JObject VerifyAndReadBodyData(string token)
         {
-            var rawData = jwtHelper.Decode(messengerSettings.SecureKey, token);
+            var rawData = jwtHelper.Decode(messengerSettings.SecureKey, token.Trim());
 
             return JObject.Parse(rawData);
         }
