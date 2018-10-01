@@ -22,17 +22,28 @@
         int BotAccountId { get; }
 
         string BotUserId { get; }
+
+        int ChatKeyVersion { get; }
+
+        int BusinessAccountType { get; }
+
+        int EncryptionMode { get; }
     }
 
     public class LetstalkSettings : IMessengerSettings
     {
+#pragma warning disable S107 // Methods should not have too many parameters
         public LetstalkSettings(
             string apiEndpoint,
             string apiKey,
             string secureKey,
             string chatKey,
             int botAccountId,
-            string botUserId)
+            string botUserId,
+            int chatKeyVersion,
+            int businessAccountType,
+            int encryptionMode)
+#pragma warning restore S107 // Methods should not have too many parameters
         {
             ApiEndpoint = apiEndpoint;
             ApiKey = apiKey;
@@ -40,6 +51,9 @@
             ChatKey = chatKey;
             BotAccountId = botAccountId;
             BotUserId = botUserId;
+            ChatKeyVersion = chatKeyVersion;
+            BusinessAccountType = businessAccountType;
+            EncryptionMode = encryptionMode;
         }
 
         public string ApiEndpoint { get; }
@@ -53,6 +67,12 @@
         public int BotAccountId { get; }
 
         public string BotUserId { get; }
+
+        public int ChatKeyVersion { get; }
+
+        public int BusinessAccountType { get; }
+
+        public int EncryptionMode { get; }
     }
 
     public static class AppSettings
@@ -85,6 +105,9 @@
             var messengerSecureKey = GetConfigs("MessengerAPIClient:SecureKey");
             var messengerChatKey = GetConfigs("MessengerAPIClient:ChatKey");
             var messengerBotUserId = GetConfigs("MessengerAPIClient:BotUserId");
+            var chatKeyVersion = int.Parse(GetConfigs("MessengerAPIClient:ChatKeyVersion"));
+            var businessAccountType = int.Parse(GetConfigs("MessengerAPIClient:BusinessAccountType"));
+            var encryptionMode = int.Parse(GetConfigs("MessengerAPIClient:EncryptionMode"));
 
             Messenger = new LetstalkSettings(
                 messengerApiEndpoint,
@@ -92,7 +115,10 @@
                 messengerSecureKey,
                 messengerChatKey,
                 messengerBotAccountId,
-                messengerBotUserId);
+                messengerBotUserId,
+                chatKeyVersion,
+                businessAccountType,
+                encryptionMode);
         }
 #pragma warning restore S3963 // "static" fields should be initialized inline
 

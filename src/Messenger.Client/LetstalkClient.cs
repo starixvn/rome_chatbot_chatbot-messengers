@@ -12,9 +12,6 @@
 
     public class LetstalkClient : IMessengerClient
     {
-        private const int AESEncryptionMode = 5;
-        private const int BusinessAccountType = 2;
-        private const int ChatKeyVersion = 3;
         private readonly int botId;
         private readonly IRestClientHelper restClientHelper;
         private readonly ICryptographyHelper cryptographyHelper;
@@ -94,12 +91,12 @@
 
             payload.UserId = messengerSettings.BotUserId;
             payload.Time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
-            payload.HashType = AESEncryptionMode;
-            payload.From = BusinessAccountType;
+            payload.HashType = messengerSettings.EncryptionMode;
+            payload.From = messengerSettings.BusinessAccountType;
             payload.Type = MessageType.Text;
             payload.Id = 100;
             payload.Receiver = accountIdToLowerList.ElementAt(0);
-            payload.HashId = ChatKeyVersion;
+            payload.HashId = messengerSettings.ChatKeyVersion;
 
             return restClientHelper.ExecutePostAsync<Result>(
                 $"bot/push/{botId}",

@@ -23,7 +23,7 @@ namespace Messenger.Client.Sample
             //{
             //    Stopwatch stopWatch = Stopwatch.StartNew();
 
-                var result = letstalkClient.PushAsync("starix_test500", "test message 1").Result;
+            //    var result = letstalkClient.PushAsync("ricky.nguyen", "test message 1").Result;
 
             //    stopWatch.Stop();
 
