@@ -23,10 +23,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="App_Data\LOCAL\SPNames.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="App_Data\LOCAL\SPNames.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fanex.Bot.Client" Version="1.0.4.4" />
+    <PackageReference Include="Fanex.Data.Repository" Version="3.0.0-rc4" />
     <PackageReference Include="Fanex.Logging.RabbitMQ" Version="1.0.0-beta8" />
     <PackageReference Include="Messenger.Client" Version="1.0.0-beta5" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.1.1" />
+    <PackageReference Include="Quartz" Version="3.0.6" />
   </ItemGroup>
 
   <ItemGroup>

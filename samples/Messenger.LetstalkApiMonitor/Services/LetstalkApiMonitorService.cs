@@ -4,34 +4,44 @@
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+    using Fanex.Bot.Client;
     using Fanex.Logging;
     using Messenger.Client;
     using Messenger.LetstalkApiMonitor.Configurations;
+    using Messenger.LetstalkApiMonitor.Jobs;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
+    using Quartz;
 
     public class LetstalkApiMonitorService : BackgroundService
     {
         private readonly ILogger logger;
         private readonly IMessengerClient letstalkClient;
         private readonly LetstalkApiMonitorSettings settings;
+        private readonly ISchedulerFactory schedulerFactory;
+        private readonly IBotConnector botConnector;
 
         public LetstalkApiMonitorService(
             ILogger logger,
             IMessengerClient letstalkClient,
-            IOptions<LetstalkApiMonitorSettings> settings)
+            IOptions<LetstalkApiMonitorSettings> settings,
+            ISchedulerFactory schedulerFactory,
+            IBotConnector botConnector)
         {
             this.logger = logger;
             this.letstalkClient = letstalkClient;
             this.settings = settings?.Value
                 ?? throw new ArgumentNullException(nameof(settings));
+            this.schedulerFactory = schedulerFactory;
+            this.botConnector = botConnector;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             logger.Debug($"Letstalk API Monitor Service is starting.");
             stoppingToken.Register(() => logger.Debug($"#1 Letstalk API Monitor Service is stopping."));
+            var scheduler = await schedulerFactory.GetScheduler();
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -50,10 +60,21 @@
                     if (result.IsOk)
                     {
                         logger.Info(message.ToString());
+
+                        await scheduler.ScheduleJob(
+                            CreateJob(
+                                healthCheckMessage,
+                                settings.WebhookLogCategoryId,
+                                settings.SkypeConversationId,
+                                settings.IsProduction),
+                            CreateTrigger(settings.VerifyLogJobStartAfterSecond));
+
+                        await scheduler.Start();
                     }
                     else
                     {
                         logger.Error(message.ToString());
+                        botConnector.Send(message.ToString(), settings.SkypeConversationId);
                     }
                 }
                 catch (Exception ex)
@@ -64,6 +85,7 @@
                     message.Append(ex.Message);
 
                     logger.Error(message.ToString(), ex);
+                    botConnector.Send(message.ToString(), settings.SkypeConversationId);
                 }
                 finally
                 {
@@ -73,5 +95,20 @@
 
             await Task.CompletedTask;
         }
+
+        private static IJobDetail CreateJob(string message, int logCategoryId, string skypeConversationId, bool isProduction)
+            => JobBuilder.Create<VerifyLogJob>()
+                .WithIdentity("CheckLogJob", "CheckLogJobs")
+                .UsingJobData("message", message)
+                .UsingJobData("logCategoryId", logCategoryId)
+                .UsingJobData("skypeConversationId", skypeConversationId)
+                .UsingJobData("isProduction", isProduction)
+                .Build();
+
+        private static ITrigger CreateTrigger(int startAfterSecond)
+            => TriggerBuilder.Create()
+                .WithIdentity("CheckLogJobTrigger", "CheckLogJobTriggers")
+                .StartAt(DateTime.Now.AddSeconds(startAfterSecond))
+                .Build();
     }
 }

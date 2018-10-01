@@ -1,5 +1,12 @@
 ﻿namespace Messenger.LetstalkApiMonitor
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Linq;
+    using Fanex.Bot.Client;
+    using Fanex.Bot.Client.Configuration;
+    using Fanex.Data;
+    using Fanex.Data.Repository;
     using Fanex.Logging;
     using Fanex.Logging.RabbitMQ;
     using Messenger.Client;
@@ -11,6 +18,8 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Quartz;
+    using Quartz.Impl;
 
     public class Startup
     {
@@ -34,6 +43,11 @@
                     .SetDefaultLogCategory(Configuration["Fanex.Logging:DefaultCategory"])
                     .Use(new RabbitMQLogging(Configuration["Fanex.Logging:RabbitMQConnectionStrings"]));
             services.AddSingleton(Logger.Log);
+            services.AddSingleton<ISchedulerFactory>(
+                    new StdSchedulerFactory(new NameValueCollection
+                    {
+                        { "quartz.serializer.type", "binary" }
+                    }));
 
             var letstalkSetting = new LetstalkSettings(
                 Configuration["MessengerAPIClient:ApiEndpoint"],
@@ -44,7 +58,8 @@
                 Configuration["MessengerAPIClient:BotUserId"]);
 
             services.AddSingleton<IMessengerClient>(new LetstalkClient(letstalkSetting));
-
+            services.AddSingleton<IDynamicRepository, DynamicRepository>();
+            services.AddSingleton<IBotConnector, BotConnector>();
             //configure background task
             services.AddHostedService<LetstalkApiMonitorService>();
         }
@@ -61,6 +76,24 @@
             {
                 await context.Response.WriteAsync("Letstalk API Monitor has been started!");
             });
+
+            var connections = Configuration
+                .GetSection("ConnectionStrings")
+                .GetChildren()
+                .ToDictionary(connection => connection.Key, connection => connection.Value, StringComparer.OrdinalIgnoreCase);
+
+            DbSettingProviderManager
+                .StartNewSession()
+                .UseConnectionStrings(connections)
+                .UseDefaultDbSettingProvider(
+                    Configuration.GetSection("StoreProcedureDirectory").Value ??
+                    throw new InvalidOperationException("Missing StoreProcedureDirectory config"))
+                .Run();
+
+            BotClientManager.UseConfig(new BotSettings(
+                  new Uri(Configuration.GetSection("FanexBotClient:BotServiceUrl").Value),
+                  Configuration.GetSection("FanexBotClient:ClientId").Value,
+                  Configuration.GetSection("FanexBotClient:ClientPassword").Value));
         }
     }
 }
