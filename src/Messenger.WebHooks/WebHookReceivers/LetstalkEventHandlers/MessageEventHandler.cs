@@ -57,6 +57,11 @@
 
                 LogEvent(hookEvent, command);
 
+                if (hookEvent.PayloadObject.UserId == Configurations.AppSettings.MonitorLetstalkId)
+                {
+                    return;
+                }
+
                 await commandService.Run(command, MessengerType, hookEvent.Source.UserId);
             }
             catch (Exception ex)
