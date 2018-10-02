@@ -38,14 +38,14 @@ namespace Messenger.Client.Sample
             //Console.WriteLine($"Request: Push, response: {JsonConvert.SerializeObject(result)}");
 
             //var result = letstalkClient.SetWebhookAsync("http://chatbot-webhook.starific.net:8082/v1/api/webhooks/incoming/letstalk/").Result;
-            var result = letstalkClient.SetWebhookAsync("https://bot.nexdev.net:7419/local01/api/webhooks/incoming/letstalk/").Result;
+            //var result = letstalkClient.SetWebhookAsync("https://bot.nexdev.net:7419/local01/api/webhooks/incoming/letstalk/").Result;
             //var profile = letstalkClient.GetProfileAsync("$&@%#%ping").Result;
             //letstalkClient.SetAutoReplyAsync("auto reply test", true).Result;
 
             //Console.WriteLine($"Request: Push, response: {JsonConvert.SerializeObject(profile)}");
 
             //var result = letstalkClient.setidd(botId, new List<string> { "ricky.nguyen" }, "----------2323------------------------------------------------");
-            //var result1 = letstalkClient.ChangeDisplayNameAsync("Atom").GetAwaiter().GetResult();
+            //var result1 = letstalkClient.ChangeDisplayNameAsync("Atom-Ex").GetAwaiter().GetResult();
 
             //Console.WriteLine($"Request: ChangeDisplayName, response: {JsonConvert.SerializeObject(result1)}");
 
