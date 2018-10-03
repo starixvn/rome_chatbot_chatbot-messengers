@@ -96,7 +96,7 @@
 
         private static IJobDetail CreateJob(string message, int logCategoryId, string skypeConversationId, bool isProduction, int periodSecond)
             => JobBuilder.Create<VerifyLogJob>()
-                .WithIdentity("CheckLogJob", "CheckLogJobs")
+                .WithIdentity($"CheckLogJob_{Guid.NewGuid()}", "CheckLogJobs")
                 .UsingJobData("message", message)
                 .UsingJobData("logCategoryId", logCategoryId)
                 .UsingJobData("skypeConversationId", skypeConversationId)
@@ -106,7 +106,7 @@
 
         private static ITrigger CreateTrigger(int startAfterSecond)
             => TriggerBuilder.Create()
-                .WithIdentity("CheckLogJobTrigger", "CheckLogJobTriggers")
+                .WithIdentity($"CheckLogJobTrigger_{Guid.NewGuid()}", "CheckLogJobTriggers")
                 .StartAt(DateTime.Now.AddSeconds(startAfterSecond))
                 .Build();
     }
