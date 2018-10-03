@@ -32,8 +32,9 @@
             var logCategoryId = dataMap.GetIntValue("logCategoryId");
             var skypeConversationId = dataMap.GetString("skypeConversationId");
             var isProduction = dataMap.GetBooleanValue("isProduction");
+            var periodSecond = dataMap.GetIntValue("periodSecond");
 
-            var logs = await GetLogs(logCategoryId, isProduction);
+            var logs = await GetLogs(logCategoryId, isProduction, periodSecond);
             var logMessage = logs.FirstOrDefault()?.FormattedMessage;
 
             if (string.IsNullOrEmpty(logMessage) || !logMessage.Contains(message))
@@ -42,12 +43,12 @@
             }
         }
 
-        private Task<IEnumerable<Log>> GetLogs(int logCategoryId, bool isProduction)
+        private Task<IEnumerable<Log>> GetLogs(int logCategoryId, bool isProduction, int periodSecond)
             => dynamicRepository.FetchAsync<Log>(
                 new GetLogCriteria
                 {
                     CategoryId = logCategoryId,
-                    From = DateTime.UtcNow.AddSeconds(-65),
+                    From = DateTime.UtcNow.AddSeconds(-1 * periodSecond),
                     To = DateTime.UtcNow,
                     Severity = "Information",
                     Size = 1,

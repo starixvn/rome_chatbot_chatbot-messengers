@@ -66,7 +66,8 @@
                                 healthCheckMessage,
                                 settings.WebhookLogCategoryId,
                                 settings.SkypeConversationId,
-                                settings.IsProduction),
+                                settings.IsProduction,
+                                settings.VerifyLogJobStartAfterSecond),
                             CreateTrigger(settings.VerifyLogJobStartAfterSecond));
 
                         await scheduler.Start();
@@ -96,13 +97,14 @@
             await Task.CompletedTask;
         }
 
-        private static IJobDetail CreateJob(string message, int logCategoryId, string skypeConversationId, bool isProduction)
+        private static IJobDetail CreateJob(string message, int logCategoryId, string skypeConversationId, bool isProduction, int periodSecond)
             => JobBuilder.Create<VerifyLogJob>()
                 .WithIdentity("CheckLogJob", "CheckLogJobs")
                 .UsingJobData("message", message)
                 .UsingJobData("logCategoryId", logCategoryId)
                 .UsingJobData("skypeConversationId", skypeConversationId)
                 .UsingJobData("isProduction", isProduction)
+                .UsingJobData("periodSecond", periodSecond)
                 .Build();
 
         private static ITrigger CreateTrigger(int startAfterSecond)
