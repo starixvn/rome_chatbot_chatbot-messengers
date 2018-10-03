@@ -74,7 +74,6 @@
                     else
                     {
                         logger.Error(message.ToString());
-                        botConnector.Send(message.ToString(), settings.SkypeConversationId);
                     }
                 }
                 catch (Exception ex)
