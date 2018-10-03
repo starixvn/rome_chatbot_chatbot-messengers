@@ -28,19 +28,25 @@
         public async Task Execute(IJobExecutionContext context)
         {
             var dataMap = context.JobDetail.JobDataMap;
-            var message = dataMap.GetString("message");
+            var healthCheckMessage = dataMap.GetString("message");
             var logCategoryId = dataMap.GetIntValue("logCategoryId");
             var skypeConversationId = dataMap.GetString("skypeConversationId");
             var isProduction = dataMap.GetBooleanValue("isProduction");
             var periodSecond = dataMap.GetIntValue("periodSecond");
 
             var logs = await GetLogs(logCategoryId, isProduction, periodSecond);
-            var logMessage = logs.FirstOrDefault()?.FormattedMessage;
 
-            if (string.IsNullOrEmpty(logMessage) || !logMessage.Contains(message))
+            foreach (var log in logs)
             {
-                botConnector.Send($"Alpha Webhook missed receiving **{message}**", skypeConversationId);
+                var logMessage = log?.FormattedMessage;
+
+                if (!string.IsNullOrEmpty(logMessage) && logMessage.Contains(healthCheckMessage))
+                {
+                    return;
+                }
             }
+
+            botConnector.Send($"Alpha Webhook missed receiving **{healthCheckMessage}**", skypeConversationId);
         }
 
         private Task<IEnumerable<Log>> GetLogs(int logCategoryId, bool isProduction, int periodSecond)
@@ -51,7 +57,7 @@
                     From = DateTime.UtcNow.AddSeconds(-2 * periodSecond),
                     To = DateTime.UtcNow,
                     Severity = "Information",
-                    Size = 1,
+                    Size = 10,
                     Page = 1,
                     ToGMT = 7,
                     MachineId = 0,
