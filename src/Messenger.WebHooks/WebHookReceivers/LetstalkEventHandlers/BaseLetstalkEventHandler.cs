@@ -1,6 +1,8 @@
 ﻿namespace Messenger.WebHooks.WebHookReceivers.LetstalkEventHandlers
 {
+    using System;
     using System.Threading.Tasks;
+    using Fanex.Logging.Extensions.Web;
     using Messenger.WebHooks.Models;
     using Microsoft.AspNet.WebHooks;
     using Newtonsoft.Json;
@@ -21,13 +23,20 @@
 
         public override Task EnqueueAsync(WebHookQueueContext context)
         {
-            var data = context.Data as JObject;
-            if (data != null && data["type"].Value<string>() == EventTypeName)
+            try
             {
-                var hookEvent = data.ToObject<HookEvent>();
-                hookEvent.PayloadObject = JsonConvert.DeserializeObject<Payload>(hookEvent.EncodedPayload);
+                var data = context.Data as JObject;
+                if (data != null && data["type"].Value<string>() == EventTypeName)
+                {
+                    var hookEvent = data.ToObject<HookEvent>();
+                    hookEvent.PayloadObject = JsonConvert.DeserializeObject<Payload>(hookEvent.EncodedPayload);
 
-                EnqueueAsync(context, hookEvent);
+                    EnqueueAsync(context, hookEvent);
+                }
+            }
+            catch(Exception ex)
+            {
+                ExceptionHandler.Handle(ex);
             }
 
             return Task.FromResult(true);

@@ -6,8 +6,6 @@
     {
         public string Type { get; set; }
 
-        public long TimeStamp { get; set; }
-
         [JsonProperty(PropertyName = "payload")]
         public string EncodedPayload { get; set; }
 
