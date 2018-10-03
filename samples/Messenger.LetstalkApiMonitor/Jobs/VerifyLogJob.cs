@@ -48,7 +48,7 @@
                 new GetLogCriteria
                 {
                     CategoryId = logCategoryId,
-                    From = DateTime.UtcNow.AddSeconds(-1 * periodSecond),
+                    From = DateTime.UtcNow.AddSeconds(-2 * periodSecond),
                     To = DateTime.UtcNow,
                     Severity = "Information",
                     Size = 1,
