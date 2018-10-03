@@ -7,7 +7,7 @@ using Messenger.Client.Helpers;
 using Messenger.Client.Models;
 using Messenger.WebHooks.Site.Sample.Models;
 
-namespace Messenger.WebHooks.Site.Sample.Controllers
+namespace Messenger.WebHooks.Site.Sample.Controllersmessengersettings.json
 {
     public class HomeController : Controller
     {
@@ -29,7 +29,7 @@ namespace Messenger.WebHooks.Site.Sample.Controllers
 
             try
             {
-                restClient.ExecutePost<Result>("/incoming/letstalk",
+                restClient.ExecutePost<Result>("/incoming/letstalk/100000",
                     new Dictionary<string, object>
                     {
                     { "type", "message" },

@@ -208,6 +208,7 @@
       <SonarQubeExclude>True</SonarQubeExclude>
     </Compile>
     <Compile Include="Configurations\AppSettings.cs" />
+    <Compile Include="Configurations\MessengerSettings.cs" />
     <Compile Include="Extensions\HttpConfigurationExtensions.cs">
       <SonarQubeExclude>True</SonarQubeExclude>
     </Compile>
@@ -230,6 +231,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Messenger.WebHooks.ruleset" />
+    <Content Include="messengersettings.json" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.config">

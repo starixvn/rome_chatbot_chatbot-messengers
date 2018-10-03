@@ -7,7 +7,6 @@
     using Chatbot.Client.Services;
     using Fanex.Logging;
     using Fanex.Logging.Extensions.Web;
-    using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
     using Messenger.WebHooks.App_Start;
     using Messenger.WebHooks.Configurations;
@@ -39,8 +38,8 @@
             this.commandService = commandService ?? DependencyResolver.GetInstance<CommandService>();
             this.cryptographyHelper = cryptographyHelper ?? DependencyResolver.GetInstance<ICryptographyHelper>();
             this.logger = logger ?? Logger.Log;
-            this.messengerSettings = messengerSettings ?? Client.Configurations.AppSettings.Messenger;
-            this.webhookSettings = webhookSettings ?? Configurations.AppSettings.Settings;
+            this.messengerSettings = messengerSettings ?? DependencyResolver.GetInstance<IMessengerSettings>();
+            this.webhookSettings = webhookSettings ?? AppSettings.Settings;
         }
 
         protected override string EventTypeName => eventTypeName;
@@ -51,7 +50,7 @@
             {
                 var messageContent = cryptographyHelper.Decrypt(
                     hookEvent.PayloadObject.HashContent,
-                    messengerSettings.ChatKey,
+                    messengerSettings.GetChatKey(context.Receiver, context.Id),
                     hookEvent.PayloadObject.HashContentKey);
 
                 if (IsVoiceMessage(messageContent))
@@ -98,7 +97,7 @@
                 message.AppendLine($"#LetstalkWebhook : OK at {DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")}");
                 message.Append(jsonMessage);
 
-                logger.Info(message.ToString(), Configurations.AppSettings.HeathMonitorLogCategory);
+                logger.Info(message.ToString(), AppSettings.HeathMonitorLogCategory);
                 return;
             }
 

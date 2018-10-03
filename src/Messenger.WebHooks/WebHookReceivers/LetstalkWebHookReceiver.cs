@@ -9,7 +9,6 @@
     using System.Web;
     using System.Web.Http.Controllers;
     using Fanex.Logging.Extensions.Web;
-    using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
     using Messenger.WebHooks.App_Start;
     using Messenger.WebHooks.Configurations;
@@ -18,7 +17,7 @@
 
     public class LetstalkWebHookReceiver : WebHookReceiver
     {
-        internal const string ReceiverName = "letstalk";
+        internal const string ReceiverName = "Letstalk";
 
         public override string Name => ReceiverName;
 
@@ -36,8 +35,8 @@
             IWebhookSettings webhookSettings)
         {
             this.jwtHelper = jwtHelper ?? DependencyResolver.GetInstance<IJwtHelper>();
-            this.messengerSettings = messengerSettings ?? Client.Configurations.AppSettings.Messenger;
-            this.webhookSettings = webhookSettings ?? Configurations.AppSettings.Settings;
+            this.messengerSettings = messengerSettings ?? DependencyResolver.GetInstance<IMessengerSettings>();
+            this.webhookSettings = webhookSettings ?? AppSettings.Settings;
         }
 
         public override async Task<HttpResponseMessage> ReceiveAsync(
@@ -91,7 +90,7 @@
             var token = await request.Content.ReadAsStringAsync();
 
             // Read the request entity body
-            var data = VerifyAndReadBodyData(token);
+            var data = VerifyAndReadBodyData(id, token);
 
             // TODO: Get the event actions, currently we dont have term action, I just init an empty enumerable
             var actions = Enumerable.Empty<string>();
@@ -118,9 +117,9 @@
             }
         }
 
-        private JObject VerifyAndReadBodyData(string token)
+        private JObject VerifyAndReadBodyData(string id, string token)
         {
-            var rawData = jwtHelper.Decode(messengerSettings.SecureKey, token.Trim());
+            var rawData = jwtHelper.Decode(messengerSettings.GetSecureKey(ReceiverName, id), token.Trim());
 
             return JObject.Parse(rawData);
         }

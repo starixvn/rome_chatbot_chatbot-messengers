@@ -2,7 +2,6 @@
 {
     using Chatbot.Client.Services;
     using Fanex.Logging;
-    using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
     using Messenger.WebHooks.Configurations;
     using SimpleInjector;
@@ -17,7 +16,8 @@
             container.RegisterSingleton<ICryptographyHelper, CryptographyHelper>();
             container.RegisterSingleton<CommandService, CommandServiceImpl>();
             container.RegisterInstance(Logger.Log);
-            container.RegisterInstance(Configurations.AppSettings.Settings);
+            container.RegisterInstance(AppSettings.Settings);
+            container.RegisterSingleton<IMessengerSettings>(() => new MessengerSettings());
 
             container.Verify();
 
