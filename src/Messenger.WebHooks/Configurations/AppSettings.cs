@@ -11,21 +11,27 @@
         IEnumerable<string> WhiteListIPs { get; }
 
         IEnumerable<string> LoggingMessengerUsernames { get; }
+
+        bool EnabledLogAllRequest { get; }
     }
 
     public class WebhookSettings : IWebhookSettings
     {
         public WebhookSettings(
             string whiteListIPs,
-            string loggingMessengerUsernames)
+            string loggingMessengerUsernames,
+            bool enabledLogAllRequest)
         {
             WhiteListIPs = whiteListIPs.Split(',');
             LoggingMessengerUsernames = loggingMessengerUsernames.Split(',').Where(name => !string.IsNullOrWhiteSpace(name));
+            EnabledLogAllRequest = enabledLogAllRequest;
         }
 
         public IEnumerable<string> WhiteListIPs { get; }
 
         public IEnumerable<string> LoggingMessengerUsernames { get; }
+
+        public bool EnabledLogAllRequest { get; }
     }
 
     public static class AppSettings
@@ -34,10 +40,12 @@
         {
             var whiteListIPs = GetConfigs("Webhook:WhiteListIPs");
             var loggingMessengerUsernames = GetConfigs("Webhook:LoggingMessengerUsernames");
+            var enabledLogAllRequest = GetConfigs("Webhook:EnabledLogAllRequest") == "1";
 
             Settings = new WebhookSettings(
                 whiteListIPs,
-                loggingMessengerUsernames);
+                loggingMessengerUsernames,
+                enabledLogAllRequest);
         }
 
 #pragma warning restore S3963 // "static" fields should be initialized inline

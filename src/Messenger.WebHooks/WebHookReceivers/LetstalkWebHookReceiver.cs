@@ -49,7 +49,10 @@
             {
                 ValidateRequest(id, context, request);
 
-                ExceptionHandler.Handle(new Exception("Received Webhook Event"), System.Diagnostics.TraceEventType.Information);
+                if (webhookSettings.EnabledLogAllRequest)
+                {
+                    ExceptionHandler.Handle(new Exception("Received Webhook Event"), System.Diagnostics.TraceEventType.Information);
+                }
 
                 if (webhookSettings.WhiteListIPs.Any()
                     && HttpContext.Current != null
