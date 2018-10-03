@@ -57,8 +57,9 @@
 
                 LogEvent(hookEvent, command);
 
-                if (hookEvent.PayloadObject.UserId == Configurations.AppSettings.MonitorLetstalkId)
-                {
+                if (hookEvent.PayloadObject.UserId == Configurations.AppSettings.MonitorLetstalkId
+                    || hookEvent.PayloadObject.Receiver == Configurations.AppSettings.MonitorLetstalkId)
+                { 
                     return;
                 }
 
@@ -81,7 +82,8 @@
                 },
                 Formatting.Indented);
 
-            if (hookEvent.PayloadObject.UserId == Configurations.AppSettings.MonitorLetstalkId)
+            if (hookEvent.PayloadObject.UserId == Configurations.AppSettings.MonitorLetstalkId
+                || hookEvent.PayloadObject.Receiver == Configurations.AppSettings.MonitorLetstalkId)
             {
                 var message = new StringBuilder();
                 message.AppendLine($"#LetstalkWebhook : OK at {DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")}");
