@@ -45,7 +45,6 @@
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                logger.Debug($"Letstalk API Monitor Service is doing background work.");
                 var healthCheckMessage = $"Health check message at {DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")}";
 
                 try
