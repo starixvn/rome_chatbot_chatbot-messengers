@@ -84,7 +84,6 @@
                     message.Append(ex.Message);
 
                     logger.Error(message.ToString(), ex);
-                    botConnector.Send(message.ToString(), settings.SkypeConversationId);
                 }
                 finally
                 {
