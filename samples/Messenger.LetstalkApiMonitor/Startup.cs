@@ -55,7 +55,10 @@
                 Configuration["MessengerAPIClient:SecureKey"],
                 Configuration["MessengerAPIClient:ChatKey"],
                 int.Parse(Configuration["MessengerAPIClient:BotAccountId"]),
-                Configuration["MessengerAPIClient:BotUserId"]);
+                Configuration["MessengerAPIClient:BotUserId"],
+                int.Parse(Configuration["MessengerAPIClient:ChatKeyVersion"]),
+                int.Parse(Configuration["MessengerAPIClient:BusinessAccountType"]),
+                int.Parse(Configuration["MessengerAPIClient:EncryptionMode"]));
 
             services.AddSingleton<IMessengerClient>(new LetstalkClient(letstalkSetting));
             services.AddSingleton<IDynamicRepository, DynamicRepository>();
