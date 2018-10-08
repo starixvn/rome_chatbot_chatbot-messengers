@@ -23,6 +23,7 @@
         private readonly IMessengerSettings messengerSettings;
         private readonly IWebhookSettings webhookSettings;
         private const string eventTypeName = "message";
+        private const string voicePattern = "voice_key";
 
         public MessageEventHandler() : this(null, null, null, null, null)
         {
@@ -53,13 +54,18 @@
                     messengerSettings.ChatKey,
                     hookEvent.PayloadObject.HashContentKey);
 
+                if (IsVoiceMessage(messageContent))
+                {
+                    return;
+                }
+
                 var command = JsonConvert.DeserializeObject<MessageContent>(messageContent).Msg;
 
                 LogEvent(hookEvent, command);
 
                 if (hookEvent.PayloadObject.UserId == Configurations.AppSettings.MonitorLetstalkId
                     || hookEvent.PayloadObject.Receiver == Configurations.AppSettings.MonitorLetstalkId)
-                { 
+                {
                     return;
                 }
 
@@ -70,6 +76,9 @@
                 ExceptionHandler.Handle(ex);
             }
         }
+
+        private static bool IsVoiceMessage(string messageContent)
+            => !string.IsNullOrWhiteSpace(messageContent) && messageContent.Contains(voicePattern);
 
         private void LogEvent(HookEvent hookEvent, string command)
         {
@@ -90,6 +99,7 @@
                 message.Append(jsonMessage);
 
                 logger.Info(message.ToString(), Configurations.AppSettings.HeathMonitorLogCategory);
+                return;
             }
 
             if (webhookSettings.LoggingMessengerUsernames.Any()
