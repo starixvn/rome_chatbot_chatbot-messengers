@@ -43,6 +43,9 @@
     <PackageReference Include="Messenger.Client" Version="1.0.0-beta6" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.1.1" />
+    <PackageReference Include="ONEbook.UM" Version="3.0.0-beta3" />
+    <PackageReference Include="ONEbook.UM.AspNetCore" Version="3.0.0-beta" />
+    <PackageReference Include="ONEbook.UM.Transport" Version="3.0.0-beta" />
     <PackageReference Include="Quartz" Version="3.0.6" />
   </ItemGroup>
 

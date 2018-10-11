@@ -4,7 +4,6 @@
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-    using Fanex.Bot.Client;
     using Fanex.Logging;
     using Messenger.Client;
     using Messenger.LetstalkApiMonitor.Configurations;
@@ -12,6 +11,7 @@
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
+    using ONEbook.UM.Services;
     using Quartz;
 
     public class LetstalkApiMonitorService : BackgroundService
@@ -20,21 +20,21 @@
         private readonly IMessengerClient letstalkClient;
         private readonly LetstalkApiMonitorSettings settings;
         private readonly ISchedulerFactory schedulerFactory;
-        private readonly IBotConnector botConnector;
+        private readonly IMaintenanceService maintenanceService;
 
         public LetstalkApiMonitorService(
             ILogger logger,
             IMessengerClient letstalkClient,
             IOptions<LetstalkApiMonitorSettings> settings,
             ISchedulerFactory schedulerFactory,
-            IBotConnector botConnector)
+            IMaintenanceService maintenanceService)
         {
             this.logger = logger;
             this.letstalkClient = letstalkClient;
             this.settings = settings?.Value
                 ?? throw new ArgumentNullException(nameof(settings));
             this.schedulerFactory = schedulerFactory;
-            this.botConnector = botConnector;
+            this.maintenanceService = maintenanceService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -45,6 +45,15 @@
 
             while (!stoppingToken.IsCancellationRequested)
             {
+                var underMaintenance = await maintenanceService.GetUnderMaintenanceTime();
+
+                if (underMaintenance.IsUnderMaintenanceTime)
+                {
+                    logger.Info("Under maintenance");
+                    await Task.Delay(settings.WorkingIntervalTime, stoppingToken);
+                    continue;
+                }
+
                 var healthCheckMessage = $"Health check message at {DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")}";
 
                 try

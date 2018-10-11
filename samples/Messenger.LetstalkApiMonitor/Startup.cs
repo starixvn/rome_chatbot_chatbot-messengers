@@ -18,6 +18,11 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using ONEbook.UM;
+    using ONEbook.UM.AspNetCore.Configuration;
+    using ONEbook.UM.Helpers;
+    using ONEbook.UM.Services;
+    using ONEbook.UM.Transport;
     using Quartz;
     using Quartz.Impl;
 
@@ -65,6 +70,8 @@
             services.AddSingleton<IBotConnector, BotConnector>();
             //configure background task
             services.AddHostedService<LetstalkApiMonitorService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IMaintenanceService, MaintenanceService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -97,6 +104,13 @@
                   new Uri(Configuration.GetSection("FanexBotClient:BotServiceUrl").Value),
                   Configuration.GetSection("FanexBotClient:ClientId").Value,
                   Configuration.GetSection("FanexBotClient:ClientPassword").Value));
+
+            var umConfig = new UMClientConfiguration(Configuration);
+
+            UMClientManager
+                .UseConfig(umConfig)
+                .UseRestClient(new RestClient(umConfig))
+                .UseHttpContext(new HttpContextHelper(app.ApplicationServices.GetService<IHttpContextAccessor>()));
         }
     }
 }
