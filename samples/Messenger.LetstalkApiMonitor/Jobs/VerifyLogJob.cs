@@ -40,7 +40,7 @@
             {
                 var logMessage = log?.FormattedMessage;
 
-                if (!string.IsNullOrEmpty(logMessage) && logMessage.Contains(healthCheckMessage))
+                if (IsValidHealthCheckMessage(healthCheckMessage, logMessage))
                 {
                     return;
                 }
@@ -48,6 +48,9 @@
 
             botConnector.Send($"Alpha Webhook missed receiving **{healthCheckMessage}**", skypeConversationId);
         }
+
+        private static bool IsValidHealthCheckMessage(string healthCheckMessage, string logMessage)
+            => !string.IsNullOrEmpty(logMessage) && (logMessage.Contains(healthCheckMessage) && !logMessage.Contains("#LetstalkAPI :"));
 
         private Task<IEnumerable<Log>> GetLogs(int logCategoryId, bool isProduction, int periodSecond)
             => dynamicRepository.FetchAsync<Log>(
