@@ -6,6 +6,7 @@ namespace Messenger.Client.Sample
     using System.Collections.Specialized;
     using System.Configuration;
     using System.Diagnostics;
+    using System.Text.RegularExpressions;
     using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
     using Newtonsoft.Json;
@@ -23,8 +24,108 @@ namespace Messenger.Client.Sample
             //{
             //    Stopwatch stopWatch = Stopwatch.StartNew();
 
-            var result = letstalkClient.PushAsync("starix_test500", "test message 1").Result;
+            var message = string.Join(
+                "\n",
+                "Super Comm",
+                "超级总代理佣金",
+                "超級總代理佣金",
+                "คอมมิชั่นของซุปเปอร์",
+                "Hoa hồng của Super",
+                "Member Credit",
+                "会员信用额度",
+                "會員信用額度",
+                "เครดิตเมมเบอร์",
+                "Mức tín dụng của Member",
+                "Yesterday Cash",
+                "昨天现金余额",
+                "昨天現金余額",
+                "ยอดเงินสดคงเหลือของเมื่อวาน",
+                "Số dư tài khoản đến hết hôm qua",
+                "Outstanding",
+                "未完成交易",
+                "未完成交易",
+                "การเดิมพันที่ยังไม่สิ้นสุด",
+                "Tiền chưa xử lý");
 
+            var message2 = string.Join(
+                "\n",
+                "Super Comm",
+                "超级总代理佣金",
+                "超級總代理佣金",
+                "คอมมิชั่นของซุปเปอร์",
+                "Hoa hồng của Super",
+                "Member Credit",
+                "会员信用额度",
+                "會員信用額度",
+                "เครดิตเมมเบอร์",
+                "Mức tín dụng của Member",
+                "Yesterday Cash",
+                "昨天现金余额",
+                "昨天現金余額",
+                "ยอดเงินสดคงเหลือของเมื่อวาน",
+                "Số dư tài khoản đến hết hôm qua",
+                "Outstanding",
+                "未完成交易",
+                "未完成交易",
+                "การเดิมพันที่ยังไม่สิ้นสุด",
+                "Tiền chưa xử lý");
+
+            var credittext = "Master Credit: 1,975,124,301.00";
+            var first = TotalSpace(credittext.Split(':')[0]);
+            var second = TotalSpace(credittext.Split(':')[1]);
+            var totalMax = first + 1 + second - 2 - 1;
+
+            var message3 =
+                string.Join(
+                    "\n",
+                    "Balance Info",
+                    "Currency:                    UUS",
+                    "Cash:            160,621,230.92",
+                    "Yesterday Cash:  160,621,230.92",
+                    "Balance:         160,620,954.53",
+                    "Yesterday Bal:   160,620,954.53",
+                    "Today WL:                  0.00",
+                    "Yesterday WL:              0.00",
+                    "Given Credit:  1,999,999,999.00",
+                    "Master Credit: 1,975,124,301.00");
+
+            var message31 =
+               string.Join(
+                   "\n",
+                   "Balance Info",
+                   "Currency            :",
+                   "Cash                   :",
+                   "Yesterday Cash :",
+                   "Balance       :",
+                   "Yesterday Bal :",
+                   "Today WL      :",
+                   "Yesterday WL    :",
+                   "Given Credit   :",
+                   "Master Credit: 1,975,124,301.00");
+
+            var totaltemp = TotalSpace(AdjustSpace("Balance", "   160,620,954.53", totalMax));
+
+            var message4 =
+                string.Join(
+                    "\n",
+                    "Balance Info",
+                    AdjustSpace("Currency", "UUS", totalMax),
+                    AdjustSpace("Cash", "160,621,230.92", totalMax),
+                    AdjustSpace("Yesterday Cash", "160,621,230.92", totalMax),
+                    AdjustSpace("Balance", "160,620,954.53", totalMax),
+                    AdjustSpace("Yesterday Bal", "160,620,954.53", totalMax),
+                    AdjustSpace("Today WL", "0.00", totalMax),
+                    AdjustSpace("Yesterday WL", "0.00", totalMax),
+                    AdjustSpace("Given Credit", "1,999,999,999.00", totalMax),
+                    "Master Credit: 1,975,124,301.00");
+
+            //var result = letstalkClient.PushAsync("ricky.nguyen", "........._........._........._........._").Result;
+            var numbers = "123456789_123456789_123456789_123456789_";
+            var chineseMessage = "未完成交易未完成交_未完成交易未完成交_未完成交易未完成交_未完成交易未完成交_";
+            var result = letstalkClient.PushAsync("ricky.nguyen", message4).Result;
+
+
+            var total = TotalSpace("1 2");
             //    stopWatch.Stop();
 
             //    Console.WriteLine("Elapsed time {0} ms", stopWatch.ElapsedMilliseconds);
@@ -105,6 +206,43 @@ namespace Messenger.Client.Sample
             ////SetUserKeyAsync(letstalkClient);
 
             ////SetHashKeyAsync(letstalkClient);
+        }
+
+        public static int TotalSpace(string text)
+        {
+            int total = 0;
+            foreach (var character in text)
+            {
+                bool isAlphaBet = Regex.IsMatch(character.ToString(), "[a-z]|[0-9]", RegexOptions.IgnoreCase);
+                total = isAlphaBet ? total + 2 : total + 1;
+            }
+
+            return total;
+        }
+
+        public static string AdjustSpace(string first, string second, int max)
+        {
+            var firstLength = TotalSpace(first);
+            var secondLength = TotalSpace(second);
+            var total = firstLength + secondLength;
+
+            if(total > max)
+            {
+                throw new Exception("firstLength + secondLength > max");
+            }
+
+            first = AddSpace(first + ":", max - total - 1);
+            return first + second;
+        }
+
+        public static string AddSpace(string source, int numberOfSpace)
+        {
+            for (int i = 0; i < numberOfSpace; i++)
+            {
+                source = source.PadRight(32);
+            }
+
+            return source;
         }
 
         //public static void SetWebHook()
