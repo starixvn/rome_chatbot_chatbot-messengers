@@ -59,12 +59,15 @@
             => PushAsync(new List<string> { accountId }, message, expiredTime);
 
         public Task<Result> PushAsync(IEnumerable<string> accountIds, string message, DateTime? expiredTime = null)
+            => PushAsync(accountIds, new Message { Content = message }, expiredTime);
+
+        public Task<Result> PushAsync(IEnumerable<string> accountIds, Message message, DateTime? expiredTime = null)
         {
             ValidateInputParam(nameof(accountIds), accountIds);
             ValidateInputParam(nameof(message), message);
 
             var payload = new Payload();
-            var formattedMessage = JsonConvert.SerializeObject(new { msg = message });
+            var formattedMessage = JsonConvert.SerializeObject(message, DefaultJsonSerializeSetting);
 
             payload.HashContentKey = cryptographyHelper.Hash(formattedMessage);
             payload.HashContent = cryptographyHelper.Encrypt(formattedMessage, messengerSettings.ChatKey, payload.HashContentKey);

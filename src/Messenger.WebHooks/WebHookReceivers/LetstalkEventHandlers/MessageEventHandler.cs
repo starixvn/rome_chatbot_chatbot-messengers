@@ -9,6 +9,7 @@
     using Fanex.Logging.Extensions.Web;
     using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
+    using Messenger.Client.Models;
     using Messenger.WebHooks.App_Start;
     using Messenger.WebHooks.Configurations;
     using Messenger.WebHooks.Models;
@@ -59,9 +60,9 @@
                     return;
                 }
 
-                var command = JsonConvert.DeserializeObject<MessageContent>(messageContent).Msg;
+                var message = JsonConvert.DeserializeObject<Message>(messageContent);
 
-                LogEvent(hookEvent, command);
+                LogEvent(hookEvent, message, messageContent);
 
                 if (hookEvent.PayloadObject.UserId == Configurations.AppSettings.MonitorLetstalkId
                     || hookEvent.PayloadObject.Receiver == Configurations.AppSettings.MonitorLetstalkId)
@@ -69,7 +70,7 @@
                     return;
                 }
 
-                await commandService.Run(command, MessengerType, hookEvent.Source.UserId);
+                await commandService.Run(message.Content, MessengerType, hookEvent.Source.UserId);
             }
             catch (Exception ex)
             {
@@ -80,12 +81,13 @@
         private static bool IsVoiceMessage(string messageContent)
             => !string.IsNullOrWhiteSpace(messageContent) && messageContent.Contains(voicePattern);
 
-        private void LogEvent(HookEvent hookEvent, string command)
+        private void LogEvent(HookEvent hookEvent, Message message, string rawMessage)
         {
             var jsonMessage = JsonConvert.SerializeObject(
                 new
                 {
-                    command,
+                    message,
+                    rawMessage,
                     MessengerType,
                     hookEvent
                 },
@@ -94,11 +96,11 @@
             if (hookEvent.PayloadObject.UserId == Configurations.AppSettings.MonitorLetstalkId
                 || hookEvent.PayloadObject.Receiver == Configurations.AppSettings.MonitorLetstalkId)
             {
-                var message = new StringBuilder();
-                message.AppendLine($"#LetstalkWebhook : OK at {DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")}");
-                message.Append(jsonMessage);
+                var logMessage = new StringBuilder();
+                logMessage.AppendLine($"#LetstalkWebhook : OK at {DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")}");
+                logMessage.Append(jsonMessage);
 
-                logger.Info(message.ToString(), Configurations.AppSettings.HeathMonitorLogCategory);
+                logger.Info(logMessage.ToString(), Configurations.AppSettings.HeathMonitorLogCategory);
                 return;
             }
 
