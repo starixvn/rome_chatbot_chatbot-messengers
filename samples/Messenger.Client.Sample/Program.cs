@@ -6,9 +6,11 @@ namespace Messenger.Client.Sample
     using System.Collections.Specialized;
     using System.Configuration;
     using System.Diagnostics;
+    using System.Drawing;
     using System.Text.RegularExpressions;
     using Messenger.Client.Configurations;
     using Messenger.Client.Helpers;
+    using Messenger.Client.Models;
     using Newtonsoft.Json;
 
     public static class Program
@@ -70,59 +72,134 @@ namespace Messenger.Client.Sample
                 "การเดิมพันที่ยังไม่สิ้นสุด",
                 "Tiền chưa xử lý");
 
-            var credittext = "Master Credit: 1,975,124,301.00";
-            var first = TotalSpace(credittext.Split(':')[0]);
-            var second = TotalSpace(credittext.Split(':')[1]);
-            var totalMax = first + 1 + second - 2 - 1;
+            //var credittext = "Master Credit: 1,975,124,301.00";
+            //var first = TotalSpace(credittext.Split(':')[0]);
+            //var second = TotalSpace(credittext.Split(':')[1]);
+            //var totalMax = first + 1 + second - 2 ;
 
             var message3 =
                 string.Join(
                     "\n",
                     "Balance Info",
-                    "Currency:                    UUS",
-                    "Cash:            160,621,230.92",
-                    "Yesterday Cash:  160,621,230.92",
-                    "Balance:         160,620,954.53",
-                    "Yesterday Bal:   160,620,954.53",
-                    "Today WL:                  0.00",
-                    "Yesterday WL:              0.00",
-                    "Given Credit:  1,999,999,999.00",
-                    "Master Credit: 1,975,124,301.00");
+                    "Currency: UUS",
+                    "Cash:",
+                    "                 160,621,230.92",
+                    "Yesterday Cash:",
+                    "                 160,621,230.92",
+                    "Balance:",
+                    "                 160,620,954.53",
+                    "Yesterday Bal:",
+                    "                 160,620,954.53",
+                    "Today WL:",
+                    "                 0.00",
+                    "Yesterday WL:",
+                    "                 0.00",
+                    "Given Credit:",
+                    "                 1,999,999,999.00",
+                    "Master Credit:",
+                    "                 1,975,124,301.00");
 
-            var message31 =
-               string.Join(
-                   "\n",
-                   "Balance Info",
-                   "Currency            :",
-                   "Cash                   :",
-                   "Yesterday Cash :",
-                   "Balance       :",
-                   "Yesterday Bal :",
-                   "Today WL      :",
-                   "Yesterday WL    :",
-                   "Given Credit   :",
-                   "Master Credit: 1,975,124,301.00");
+            //var message31 =
+            //   string.Join(
+            //       "\n",
+            //       "Balance Info",
+            //       "Currency            :",
+            //       "Cash                   :",
+            //       "Yesterday Cash :",
+            //       "Balance       :",
+            //       "Yesterday Bal :",
+            //       "Today WL      :",
+            //       "Yesterday WL    :",
+            //       "Given Credit   :",
+            //       "Master Credit: 1,975,124,301.00");
 
-            var totaltemp = TotalSpace(AdjustSpace("Balance", "   160,620,954.53", totalMax));
+            //var totaltemp = TotalSpace(AdjustSpace("Balance", "160,620,954.53", totalMax));
 
-            var message4 =
+            //var message4 =
+            //    string.Join(
+            //        "\n",
+            //        "Balance Info",
+            //        AdjustSpace("Currency", "UUS", totalMax),
+            //        AdjustSpace("Cash", "160,621,230.92", totalMax),
+            //        AdjustSpace("Yesterday Cash", "160,621,230.92", totalMax),
+            //        AdjustSpace("Balance", "160,620,954.53", totalMax),
+            //        AdjustSpace("Yesterday Bal", "160,620,954.53", totalMax),
+            //        AdjustSpace("Today WL", "0.00", totalMax),
+            //        AdjustSpace("Yesterday WL", "0.00", totalMax),
+            //        AdjustSpace("Given Credit", "999,999,999.00", totalMax),
+            //        "Master Credit: 975,124,301.00");
+
+
+            //var totaltemp2 = TotalSpace(AdjustSpace("Master Credit", "5,124,301.00", totalMax));
+            var maxLength = GetWidthOfText("123456789_123456789_12345");
+            var subMax = (maxLength - 20) / 2;
+            var maxLength3 = GetWidthOfText("123456789_123456789_12345");
+            var maxLength2 = GetWidthOfText("Currency:             UUS");
+            var message5 =
                 string.Join(
                     "\n",
                     "Balance Info",
-                    AdjustSpace("Currency", "UUS", totalMax),
-                    AdjustSpace("Cash", "160,621,230.92", totalMax),
-                    AdjustSpace("Yesterday Cash", "160,621,230.92", totalMax),
-                    AdjustSpace("Balance", "160,620,954.53", totalMax),
-                    AdjustSpace("Yesterday Bal", "160,620,954.53", totalMax),
-                    AdjustSpace("Today WL", "0.00", totalMax),
-                    AdjustSpace("Yesterday WL", "0.00", totalMax),
-                    AdjustSpace("Given Credit", "1,999,999,999.00", totalMax),
-                    "Master Credit: 1,975,124,301.00");
+                    AdjustSpace("Currency:", "UUS", maxLength),
+                    AdjustSpace("Cash:", "999,621,230.92", maxLength),
+                    AdjustSpace("Yesterday Cash:", "999,621,230.92", maxLength),
+                    AdjustSpace("Balance:", "999,620,954.53", maxLength),
+                    AdjustSpace("Yesterday Bal:", "999,620,954.53", maxLength),
+                    AdjustSpace("Today WL:", "0.00", maxLength),
+                    AdjustSpace("Yesterday WL:", "0.00", maxLength),
+                    AdjustSpace("Given Credit:", "999,999,999.00", maxLength),
+                    AdjustSpace("Master Credit:", "999,124,301.00", maxLength),
+                    AdjustSpace("others:", "999,455,332.11", maxLength));
 
             //var result = letstalkClient.PushAsync("ricky.nguyen", "........._........._........._........._").Result;
             var numbers = "123456789_123456789_123456789_123456789_";
             var chineseMessage = "未完成交易未完成交_未完成交易未完成交_未完成交易未完成交_未完成交易未完成交_";
-            var result = letstalkClient.PushAsync("ricky.nguyen", message4).Result;
+
+            //var stringSize1 = GetWidthOfString("".PadRight(1));
+
+            var width1 = GetWidthOfString("12");
+            var width12 = GetWidthOfString(" ");
+            var width2 = GetWidthOfText("1") + GetWidthOfText("2");
+            var width22 = GetWidthOfText("A");
+            var width21 = GetWidthOfText("对");
+            var width211 = GetWidthOfText("ế");
+            var width213 = GetWidthOfText("ก");
+
+            var message6 =
+                string.Join(
+                    "\n",
+                    "Balance Info",
+                    "Currency: UUS",
+                    "Cash:",
+                    AdjustSpace("", "1,022,200 ", subMax) + AdjustSpace("* ", "1000", subMax),
+                    "Yesterday Cash:",
+                     AdjustSpace("", "1,000 ", subMax) + AdjustSpace("* ", "10,034,340", subMax),
+                    "Balance:",
+                    "                 160,620,954.53",
+                    "Yesterday Bal:",
+                    "                 160,620,954.53",
+                    "Today WL:",
+                    "                 0.00",
+                    "Yesterday WL:",
+                    "                 0.00",
+                    "Given Credit:",
+                    "                 1,999,999,999.00",
+                    "Master Credit:",
+                    "                 1,975,124,301.00");
+
+            var result = letstalkClient.PushAsync(new List<string> { "starix_test2"/*, "rafael.nguyen"*/ }, new Message
+            {
+                Content = "test 1",
+                MessageMarkup = new MessageMarkup
+                {
+                    Type = "button",
+                    MessageActions = new List<MessageAction>
+                    {
+                        new MessageAction { Label = "action1", Type = "postback", Data = "test" },
+                        new MessageAction { Label = "action2", Type = "postback", Data = "test" },
+                        new MessageAction { Label = "action3", Type = "postback", Data = "test" }
+                    }
+                }
+            }).Result;
 
 
             var total = TotalSpace("1 2");
@@ -138,8 +215,8 @@ namespace Messenger.Client.Sample
 
             //Console.WriteLine($"Request: Push, response: {JsonConvert.SerializeObject(result)}");
 
-            //var result2 = letstalkClient.SetWebhookAsync("http://chatbot-webhook.starific.net:8082/v1/api/webhooks/incoming/letstalk/").Result;
-            //var result1 = letstalkClient.SetWebhookAsync("https://bot.nexdev.net:7419/local01/api/webhooks/incoming/letstalk/").Result;
+            //var result2 = letstalkClient.SetWebhookAsync("http://chatbot-webhook.starific.net:8082/v2/api/webhooks/incoming/letstalk/").Result;
+            //var result1 = letstalkClient.SetWebhookAsync("https://bot.nexdev.net:7419/local02/api/webhooks/incoming/letstalk/").Result;
             //var result = letstalkClient.SetWebhookAsync("https://mb2.ultra88.com/api/webhooks/incoming/letstalk/").Result;
             //var profile = letstalkClient.GetProfileAsync("$&@%#%ping").Result;
             //letstalkClient.SetAutoReplyAsync("auto reply test", true).Result;
@@ -214,33 +291,38 @@ namespace Messenger.Client.Sample
             foreach (var character in text)
             {
                 bool isAlphaBet = Regex.IsMatch(character.ToString(), "[a-z]|[0-9]", RegexOptions.IgnoreCase);
-                total = isAlphaBet ? total + 2 : total + 1;
+                total = isAlphaBet ? total + 1 : total + 1;
             }
 
             return total;
         }
 
-        public static string AdjustSpace(string first, string second, int max)
+        public static string AdjustSpace(string first, string second, float max)
         {
-            var firstLength = TotalSpace(first);
-            var secondLength = TotalSpace(second);
+            var firstLength = GetWidthOfText(first);
+            var secondLength = GetWidthOfText(second);
             var total = firstLength + secondLength;
 
-            if(total > max)
-            {
-                throw new Exception("firstLength + secondLength > max");
-            }
+            //if (total > max)
+            //{
+            //    throw new Exception($"{first} firstLength + {second} secondLength > max");
+            //}
 
-            first = AddSpace(first + ":", max - total - 1);
+            first = AddSpace(first, max - total);
             return first + second;
         }
 
-        public static string AddSpace(string source, int numberOfSpace)
+        public static string AddSpace(string source, float addLength)
         {
-            for (int i = 0; i < numberOfSpace; i++)
+            var spaceLength = GetWidthOfString("_");
+            var numOfSpaceToAdd = addLength / spaceLength;
+            numOfSpaceToAdd += numOfSpaceToAdd / (float)4.15;
+
+            for (int i = 0; i < numOfSpaceToAdd; i++)
             {
-                source = source.PadRight(32);
+                source += "_";
             }
+
 
             return source;
         }
@@ -480,5 +562,42 @@ namespace Messenger.Client.Sample
 
         //    Console.WriteLine($"Request: SetHashKeyAsync, response: {JsonConvert.SerializeObject(result)}");
         //}
+
+        ////public static Size GetScreenSize(this string text, FontFamily fontFamily, double fontSize, FontStyle fontStyle, FontWeight fontWeight, FontStretch fontStretch)
+        ////{
+        ////    fontFamily = fontFamily ?? new TextBlock().FontFamily;
+        ////    fontSize = fontSize > 0 ? fontSize : new TextBlock().FontSize;
+        ////    var typeface = new Typeface(fontFamily, fontStyle, fontWeight, fontStretch);
+        ////    var ft = new FormattedText(text ?? string.Empty, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, fontSize, Brushes.Black);
+        ////    return new Size(ft.Width, ft.Height);
+        ////}
+        ///
+
+        private static float GetWidthOfText(string str)
+        {
+            float width = 0;
+
+            foreach (var ch in str)
+            {
+                width += GetWidthOfString(ch.ToString());
+            }
+
+            return width;
+        }
+
+        private static float GetWidthOfString(string str)
+        {
+            Bitmap objBitmap = default(Bitmap);
+            Graphics objGraphics = default(Graphics);
+
+            objBitmap = new Bitmap(3000, 2000);
+            objGraphics = Graphics.FromImage(objBitmap);
+
+            SizeF stringSize = objGraphics.MeasureString(str, new Font("sans-serif", 12, GraphicsUnit.Point));
+
+            objBitmap.Dispose();
+            objGraphics.Dispose();
+            return stringSize.Width;
+        }
     }
 }

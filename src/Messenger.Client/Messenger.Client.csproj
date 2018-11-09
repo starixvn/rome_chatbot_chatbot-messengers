@@ -5,9 +5,10 @@
 	<Description>Messenger Client to talk with Messenger API
 - Letstalk
 - Skype</Description>
-	<Version>1.0.0-beta6</Version>
+	<Version>1.0.1-beta3</Version>
 	<Authors>_</Authors>
 	<Product>_</Product>
+	<PackageReleaseNotes>- Support button style</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net461|AnyCPU'">

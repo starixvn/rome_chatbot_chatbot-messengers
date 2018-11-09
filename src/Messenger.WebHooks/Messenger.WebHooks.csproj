@@ -46,8 +46,8 @@
     <CodeAnalysisRuleSet>Messenger.WebHooks.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Chatbot.Client, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Chatbot.Client.1.0.4\lib\net461\Chatbot.Client.dll</HintPath>
+    <Reference Include="Chatbot.Client, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Chatbot.Client.1.0.3-beta1\lib\net461\Chatbot.Client.dll</HintPath>
     </Reference>
     <Reference Include="Chatbot.Client.Transport, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Chatbot.Client.Transport.1.0.0-beta3\lib\net461\Chatbot.Client.Transport.dll</HintPath>
@@ -66,9 +66,6 @@
     </Reference>
     <Reference Include="jose-jwt, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\jose-jwt.2.4.0\lib\net461\jose-jwt.dll</HintPath>
-    </Reference>
-    <Reference Include="Messenger.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Messenger.Client.1.0.0-beta5\lib\net461\Messenger.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.WebHooks.Common, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.WebHooks.Common.1.2.1\lib\net45\Microsoft.AspNet.WebHooks.Common.dll</HintPath>
