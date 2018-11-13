@@ -13,6 +13,7 @@
     using Messenger.WebHooks.Models;
     using Microsoft.AspNet.WebHooks;
     using Newtonsoft.Json;
+    using Chatbot.Client.Services;
 
     public class MessageEventHandler : BaseLetstalkEventHandler
     {
