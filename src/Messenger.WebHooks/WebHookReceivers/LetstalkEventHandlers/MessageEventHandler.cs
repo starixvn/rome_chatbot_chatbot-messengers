@@ -4,7 +4,6 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using Chatbot.Client.Services;
     using Fanex.Logging;
     using Fanex.Logging.Extensions.Web;
     using Messenger.Client.Configurations;
@@ -53,10 +52,10 @@
                     messengerSettings.ChatKey,
                     hookEvent.PayloadObject.HashContentKey);
 
-                if (!hookEvent.PayloadObject.Type.Equals(MessageType.Text))
-                {
-                    return;
-                }
+                ////if (!hookEvent.PayloadObject.Type.Equals(MessageType.Text))
+                ////{
+                ////    return;
+                ////}
 
                 var message = JsonConvert.DeserializeObject<MessageContent>(messageContent).Msg;
 
