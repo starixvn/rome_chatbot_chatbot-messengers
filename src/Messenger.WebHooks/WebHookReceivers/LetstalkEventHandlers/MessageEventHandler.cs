@@ -17,6 +17,7 @@
 
     public class MessageEventHandler : BaseLetstalkEventHandler
     {
+        private readonly string UnrecognizedCommand = "Unrecognized Command";
         private readonly CommandService commandService;
         private readonly ICryptographyHelper cryptographyHelper;
         private readonly ILogger logger;
@@ -53,17 +54,16 @@
                     messengerSettings.ChatKey,
                     hookEvent.PayloadObject.HashContentKey);
 
-                if (!hookEvent.PayloadObject.Type.Equals(IncomingMessageType.Text))
-                {
-                    return;
-                }
-
                 var message = JsonConvert.DeserializeObject<MessageContent>(rawMessage);
+
+                if (string.IsNullOrWhiteSpace(message.Msg))
+                {
+                    message.Msg = UnrecognizedCommand;
+                }
 
                 LogEvent(hookEvent, message, rawMessage);
 
-                if (hookEvent.PayloadObject.UserId == Configurations.AppSettings.MonitorLetstalkId
-                    || hookEvent.PayloadObject.Receiver == Configurations.AppSettings.MonitorLetstalkId)
+                if (UserIsMonitoredUser(hookEvent))
                 {
                     return;
                 }
@@ -75,6 +75,10 @@
                 ExceptionHandler.Handle(ex);
             }
         }
+
+        private static bool UserIsMonitoredUser(HookEvent hookEvent)
+            => hookEvent.PayloadObject.UserId == Configurations.AppSettings.MonitorLetstalkId
+                                || hookEvent.PayloadObject.Receiver == Configurations.AppSettings.MonitorLetstalkId;
 
         private void LogEvent(HookEvent hookEvent, MessageContent message, string rawMessage)
         {
@@ -88,6 +92,27 @@
                 },
                 Formatting.Indented);
 
+            if (IsMessageFromMonitorLetstalkUser(hookEvent, jsonMessage))
+            {
+                return;
+            }
+
+
+            if (IsIgnoredUser(hookEvent))
+            {
+                return;
+            }
+
+            logger.Info(jsonMessage);
+        }
+
+        private bool IsIgnoredUser(HookEvent hookEvent)
+            => webhookSettings.LoggingMessengerUsernames.Any()
+                            && !string.IsNullOrWhiteSpace(hookEvent.PayloadObject.UserId)
+                            && !webhookSettings.LoggingMessengerUsernames.Contains(hookEvent.PayloadObject.UserId);
+
+        private bool IsMessageFromMonitorLetstalkUser(HookEvent hookEvent, string jsonMessage)
+        {
             if (hookEvent.PayloadObject.UserId == Configurations.AppSettings.MonitorLetstalkId
                 || hookEvent.PayloadObject.Receiver == Configurations.AppSettings.MonitorLetstalkId)
             {
@@ -96,17 +121,10 @@
                 logMessage.Append(jsonMessage);
 
                 logger.Info(logMessage.ToString(), Configurations.AppSettings.HeathMonitorLogCategory);
-                return;
+                return true;
             }
 
-            if (webhookSettings.LoggingMessengerUsernames.Any()
-                && !string.IsNullOrWhiteSpace(hookEvent.PayloadObject.UserId)
-                && !webhookSettings.LoggingMessengerUsernames.Contains(hookEvent.PayloadObject.UserId))
-            {
-                return;
-            }
-
-            logger.Info(jsonMessage);
+            return false;
         }
     }
 }
