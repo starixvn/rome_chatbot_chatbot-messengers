@@ -15,9 +15,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Messenger.Client" Version="1.0.1-beta2" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Messenger.Client\Messenger.Client.csproj" />
   </ItemGroup>
 
   <ItemGroup>

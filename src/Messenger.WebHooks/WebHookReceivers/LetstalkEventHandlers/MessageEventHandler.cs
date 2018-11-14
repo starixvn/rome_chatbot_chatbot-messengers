@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using Chatbot.Client.Services;
     using Fanex.Logging;
     using Fanex.Logging.Extensions.Web;
     using Messenger.Client.Configurations;
@@ -13,7 +14,6 @@
     using Messenger.WebHooks.Models;
     using Microsoft.AspNet.WebHooks;
     using Newtonsoft.Json;
-    using Chatbot.Client.Services;
 
     public class MessageEventHandler : BaseLetstalkEventHandler
     {
@@ -48,19 +48,19 @@
         {
             try
             {
-                var messageContent = cryptographyHelper.Decrypt(
+                var rawMessage = cryptographyHelper.Decrypt(
                     hookEvent.PayloadObject.HashContent,
                     messengerSettings.ChatKey,
                     hookEvent.PayloadObject.HashContentKey);
 
-                ////if (!hookEvent.PayloadObject.Type.Equals(MessageType.Text))
-                ////{
-                ////    return;
-                ////}
+                if (!hookEvent.PayloadObject.Type.Equals(IncomingMessageType.Text))
+                {
+                    return;
+                }
 
-                var message = JsonConvert.DeserializeObject<MessageContent>(messageContent).Msg;
+                var message = JsonConvert.DeserializeObject<MessageContent>(rawMessage);
 
-                LogEvent(hookEvent, message);
+                LogEvent(hookEvent, message, rawMessage);
 
                 if (hookEvent.PayloadObject.UserId == Configurations.AppSettings.MonitorLetstalkId
                     || hookEvent.PayloadObject.Receiver == Configurations.AppSettings.MonitorLetstalkId)
@@ -68,11 +68,7 @@
                     return;
                 }
 
-                var contents = message.Split(' ');
-                var command = contents[0];
-                var parameter = contents.Count() > 1 ? contents[1] : string.Empty;
-
-                await commandService.Run(command, parameter, MessengerType, hookEvent.Source.UserId);
+                await commandService.Run(message.Msg, message.Postback?.Data, MessengerType, hookEvent.Source.UserId);
             }
             catch (Exception ex)
             {
@@ -80,25 +76,26 @@
             }
         }
 
-        private void LogEvent(HookEvent hookEvent, string command)
+        private void LogEvent(HookEvent hookEvent, MessageContent message, string rawMessage)
         {
             var jsonMessage = JsonConvert.SerializeObject(
                 new
                 {
-                    command,
+                    message,
                     MessengerType,
-                    hookEvent
+                    hookEvent,
+                    rawMessage
                 },
                 Formatting.Indented);
 
             if (hookEvent.PayloadObject.UserId == Configurations.AppSettings.MonitorLetstalkId
                 || hookEvent.PayloadObject.Receiver == Configurations.AppSettings.MonitorLetstalkId)
             {
-                var message = new StringBuilder();
-                message.AppendLine($"#LetstalkWebhook : OK at {DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")}");
-                message.Append(jsonMessage);
+                var logMessage = new StringBuilder();
+                logMessage.AppendLine($"#LetstalkWebhook : OK at {DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")}");
+                logMessage.Append(jsonMessage);
 
-                logger.Info(message.ToString(), Configurations.AppSettings.HeathMonitorLogCategory);
+                logger.Info(logMessage.ToString(), Configurations.AppSettings.HeathMonitorLogCategory);
                 return;
             }
 

@@ -186,7 +186,7 @@ namespace Messenger.Client.Sample
                     "Master Credit:",
                     "                 1,975,124,301.00");
 
-            var result = letstalkClient.PushAsync(new List<string> { "starix_test2"/*, "rafael.nguyen"*/ }, new Message
+            var result = letstalkClient.PushAsync(new List<string> { "starix_test236"/*, "rafael.nguyen"*/ }, new Message
             {
                 Content = "test 1",
                 MessageMarkup = new MessageMarkup
