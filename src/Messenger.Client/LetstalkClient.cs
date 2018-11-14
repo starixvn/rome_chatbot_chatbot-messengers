@@ -72,15 +72,9 @@
             payload.HashContentKey = cryptographyHelper.Hash(formattedMessage);
             payload.HashContent = cryptographyHelper.Encrypt(formattedMessage, messengerSettings.ChatKey, payload.HashContentKey);
 
-            if (expiredTime.HasValue)
-            {
-                payload.DueDate = new DateTimeOffset(expiredTime.Value).ToUnixTimeMilliseconds();
-            }
-            else
-            {
-                // Temporary do this, wait for TW team support null
-                payload.DueDate = DateTimeOffset.Now.AddDays(30).ToUnixTimeMilliseconds();
-            }
+            payload.DueDate = expiredTime.HasValue
+                ? new DateTimeOffset(expiredTime.Value).ToUnixTimeMilliseconds()
+                : DateTimeOffset.Now.AddHours(3).ToUnixTimeMilliseconds();
 
             return PushAsync(accountIds, payload);
         }

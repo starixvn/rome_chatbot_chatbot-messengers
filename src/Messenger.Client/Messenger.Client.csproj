@@ -5,10 +5,11 @@
 	<Description>Messenger Client to talk with Messenger API
 - Letstalk
 - Skype</Description>
-	<Version>1.0.1-beta2</Version>
+	<Version>1.0.1-beta4</Version>
 	<Authors>_</Authors>
 	<Product>_</Product>
-	<PackageReleaseNotes>- Support button style</PackageReleaseNotes>
+	<PackageReleaseNotes>- Support button style
+- Self-destruct message after 3 hours</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net461|AnyCPU'">
