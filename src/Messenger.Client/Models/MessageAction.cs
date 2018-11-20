@@ -12,6 +12,8 @@
         public string Data { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#pragma warning disable S3996 // URI properties should not be strings
         public string Uri { get; set; }
+#pragma warning restore S3996 // URI properties should not be strings
     }
 }
