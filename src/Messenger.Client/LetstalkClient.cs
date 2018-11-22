@@ -59,25 +59,22 @@
             => PushAsync(new List<string> { accountId }, message, expiredTime);
 
         public Task<Result> PushAsync(IEnumerable<string> accountIds, string message, DateTime? expiredTime = null)
+            => PushAsync(accountIds, new Message { Content = message }, expiredTime);
+
+        public Task<Result> PushAsync(IEnumerable<string> accountIds, Message message, DateTime? expiredTime = null)
         {
             ValidateInputParam(nameof(accountIds), accountIds);
             ValidateInputParam(nameof(message), message);
 
             var payload = new Payload();
-            var formattedMessage = JsonConvert.SerializeObject(new { msg = message });
+            var formattedMessage = JsonConvert.SerializeObject(message, DefaultJsonSerializeSetting);
 
             payload.HashContentKey = cryptographyHelper.Hash(formattedMessage);
             payload.HashContent = cryptographyHelper.Encrypt(formattedMessage, messengerSettings.ChatKey, payload.HashContentKey);
 
-            if (expiredTime.HasValue)
-            {
-                payload.DueDate = new DateTimeOffset(expiredTime.Value).ToUnixTimeMilliseconds();
-            }
-            else
-            {
-                // Temporary do this, wait for TW team support null
-                payload.DueDate = DateTimeOffset.Now.AddDays(30).ToUnixTimeMilliseconds();
-            }
+            payload.DueDate = expiredTime.HasValue
+                ? new DateTimeOffset(expiredTime.Value).ToUnixTimeMilliseconds()
+                : DateTimeOffset.Now.AddHours(3).ToUnixTimeMilliseconds();
 
             return PushAsync(accountIds, payload);
         }
@@ -93,7 +90,7 @@
             payload.Time = DateTimeOffset.Now.ToUnixTimeMilliseconds();
             payload.HashType = messengerSettings.EncryptionMode;
             payload.From = messengerSettings.BusinessAccountType;
-            payload.Type = MessageType.Text;
+            payload.Type = OutGoingMessageType.Text;
             payload.Id = 100;
             payload.Receiver = accountIdToLowerList.ElementAt(0);
             payload.HashId = messengerSettings.ChatKeyVersion;

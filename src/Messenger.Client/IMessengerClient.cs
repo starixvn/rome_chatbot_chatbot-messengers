@@ -13,6 +13,8 @@
 
         Task<Result> PushAsync(string accountId, string message, DateTime? expiredTime = null);
 
+        Task<Result> PushAsync(IEnumerable<string> accountIds, Message message, DateTime? expiredTime = null);
+
         Task<(Contact, bool)> GetProfileAsync(string accountId);
 
         Task<Result> SetWebhookAsync(string url);

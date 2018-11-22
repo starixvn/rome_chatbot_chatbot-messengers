@@ -83,5 +83,10 @@
         {
             throw new NotImplementedException();
         }
+
+        public Task<Result> PushAsync(IEnumerable<string> accountIds, Message message, DateTime? expiredTime = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
