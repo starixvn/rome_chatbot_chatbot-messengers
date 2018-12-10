@@ -45,19 +45,19 @@
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                var underMaintenance = await maintenanceService.GetUnderMaintenanceTime();
-
-                if (underMaintenance.IsUnderMaintenanceTime)
-                {
-                    logger.Info("Under maintenance");
-                    await Task.Delay(settings.WorkingIntervalTime, stoppingToken);
-                    continue;
-                }
-
                 var healthCheckMessage = $"Health check message at {DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")}";
 
                 try
                 {
+                    var underMaintenance = await maintenanceService.GetUnderMaintenanceTime();
+
+                    if (underMaintenance.IsUnderMaintenanceTime)
+                    {
+                        logger.Info("Under maintenance");
+                        await Task.Delay(settings.WorkingIntervalTime, stoppingToken);
+                        continue;
+                    }
+
                     var result = await letstalkClient.PushAsync(settings.AccountId, healthCheckMessage);
 
                     var message = new StringBuilder();
