@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.WebHooks.Sample",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.WebHooks.Site.Sample", "samples\Messenger.WebHooks.Site.Sample\Messenger.WebHooks.Site.Sample.csproj", "{5B812C5A-5ABC-481C-9E05-C47755EB44AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.LetstalkApiMonitor", "samples\Messenger.LetstalkApiMonitor\Messenger.LetstalkApiMonitor.csproj", "{D3C05DDC-9106-42AC-A128-0F5F912F7279}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.LetstalkApiMonitor", "samples\Messenger.LetstalkApiMonitor\Messenger.LetstalkApiMonitor.csproj", "{D3C05DDC-9106-42AC-A128-0F5F912F7279}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,7 +68,7 @@ Global
 		{788080A7-13D2-49A0-945F-37C801AE1D0D} = {8B168B46-BDAA-4A89-AAA5-923E980DF7D7}
 		{A7C39D7E-746D-4787-B409-BBE1AE50B5BD} = {07B5ABEC-6FB1-4DA6-848D-66C8738D0728}
 		{5B812C5A-5ABC-481C-9E05-C47755EB44AA} = {07B5ABEC-6FB1-4DA6-848D-66C8738D0728}
-		{D3C05DDC-9106-42AC-A128-0F5F912F7279} = {07B5ABEC-6FB1-4DA6-848D-66C8738D0728}
+		{D3C05DDC-9106-42AC-A128-0F5F912F7279} = {8B168B46-BDAA-4A89-AAA5-923E980DF7D7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {713C7940-2634-4C55-A6AF-9A4779CBFCEF}

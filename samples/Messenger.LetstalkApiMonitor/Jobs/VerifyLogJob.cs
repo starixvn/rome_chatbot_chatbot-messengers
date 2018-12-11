@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
     using Fanex.Bot.Client;
     using Fanex.Data.Repository;
@@ -31,8 +30,16 @@
             var healthCheckMessage = dataMap.GetString("message");
             var logCategoryId = dataMap.GetIntValue("logCategoryId");
             var skypeConversationId = dataMap.GetString("skypeConversationId");
+            var skypeHealthCheckHeartbeatConversationId = dataMap.GetString("skypeHealthCheckHeartbeatConversationId");
             var isProduction = dataMap.GetBooleanValue("isProduction");
             var periodSecond = dataMap.GetIntValue("periodSecond");
+            var isSendHeartbeat = dataMap.GetBooleanValue("isSendHeartbeat");
+
+            if (isSendHeartbeat
+                        && !string.IsNullOrWhiteSpace(skypeHealthCheckHeartbeatConversationId))
+            {
+                botConnector.Send($"Letstalk Health Check Service heart beat at {DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")}", skypeHealthCheckHeartbeatConversationId);
+            }
 
             var logs = await GetLogs(logCategoryId, isProduction, periodSecond);
 
@@ -50,7 +57,9 @@
         }
 
         private static bool IsValidHealthCheckMessage(string healthCheckMessage, string logMessage)
-            => !string.IsNullOrEmpty(logMessage) && (logMessage.Contains(healthCheckMessage) && !logMessage.Contains("#LetstalkAPI :"));
+            => !string.IsNullOrEmpty(logMessage)
+            && (logMessage.Contains(healthCheckMessage)
+            && !logMessage.Contains("#LetstalkAPI :"));
 
         private Task<IEnumerable<Log>> GetLogs(int logCategoryId, bool isProduction, int periodSecond)
             => dynamicRepository.FetchAsync<Log>(

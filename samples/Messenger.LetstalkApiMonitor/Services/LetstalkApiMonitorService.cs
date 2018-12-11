@@ -42,6 +42,7 @@
             logger.Debug($"Letstalk API Monitor Service is starting.");
             stoppingToken.Register(() => logger.Debug($"#1 Letstalk API Monitor Service is stopping."));
             var scheduler = await schedulerFactory.GetScheduler();
+            var countSent = 0;
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -75,10 +76,14 @@
                                 settings.WebhookLogCategoryId,
                                 settings.SkypeConversationId,
                                 settings.IsProduction,
-                                settings.VerifyLogJobStartAfterSecond),
+                                settings.VerifyLogJobStartAfterSecond,
+                                settings.IntervalToSendHeartbeat > 0 
+                                    && countSent % settings.IntervalToSendHeartbeat == 0,
+                                settings.SkypeHealthCheckHeartbeatConversationId),
                             CreateTrigger(settings.VerifyLogJobStartAfterSecond));
 
                         await scheduler.Start();
+                        countSent++;
                     }
                     else
                     {
@@ -103,7 +108,14 @@
             await Task.CompletedTask;
         }
 
-        private static IJobDetail CreateJob(string message, int logCategoryId, string skypeConversationId, bool isProduction, int periodSecond)
+        private static IJobDetail CreateJob(
+            string message, 
+            int logCategoryId, 
+            string skypeConversationId, 
+            bool isProduction, 
+            int periodSecond,
+            bool isSendHeartbeat,
+            string skypeHealthCheckHeartbeatConversationId)
             => JobBuilder.Create<VerifyLogJob>()
                 .WithIdentity($"CheckLogJob_{Guid.NewGuid()}", "CheckLogJobs")
                 .UsingJobData("message", message)
@@ -111,6 +123,8 @@
                 .UsingJobData("skypeConversationId", skypeConversationId)
                 .UsingJobData("isProduction", isProduction)
                 .UsingJobData("periodSecond", periodSecond)
+                .UsingJobData("isSendHeartbeat", isSendHeartbeat)
+                .UsingJobData("skypeHealthCheckHeartbeatConversationId", skypeHealthCheckHeartbeatConversationId)
                 .Build();
 
         private static ITrigger CreateTrigger(int startAfterSecond)

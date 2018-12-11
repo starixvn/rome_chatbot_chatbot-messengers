@@ -13,5 +13,9 @@
         public bool IsProduction { get; set; }
 
         public int VerifyLogJobStartAfterSecond { get; set; }
+
+        public int IntervalToSendHeartbeat { get; set; }
+
+        public string SkypeHealthCheckHeartbeatConversationId { get; set; }
     }
 }

@@ -203,6 +203,14 @@ namespace Messenger.Client.Sample
 
 
             var total = TotalSpace("1 2");
+
+            letstalkClient.SetAutoReplyAsync(
+                "I'm being upgraded now... please kindly talk to me later.",
+                true,
+                DateTime.Now.AddHours(-2),
+                DateTime.Now.AddHours(-1))
+                .GetAwaiter()
+                .GetResult();
             //    stopWatch.Stop();
 
             //    Console.WriteLine("Elapsed time {0} ms", stopWatch.ElapsedMilliseconds);
