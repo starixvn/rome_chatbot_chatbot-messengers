@@ -4,6 +4,7 @@
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+    using Fanex.Bot.Client;
     using Fanex.Logging;
     using Messenger.Client;
     using Messenger.LetstalkApiMonitor.Configurations;
@@ -21,13 +22,15 @@
         private readonly LetstalkApiMonitorSettings settings;
         private readonly ISchedulerFactory schedulerFactory;
         private readonly IMaintenanceService maintenanceService;
+        private readonly IBotConnector botConnector;
 
         public LetstalkApiMonitorService(
             ILogger logger,
             IMessengerClient letstalkClient,
             IOptions<LetstalkApiMonitorSettings> settings,
             ISchedulerFactory schedulerFactory,
-            IMaintenanceService maintenanceService)
+            IMaintenanceService maintenanceService,
+            IBotConnector botConnector)
         {
             this.logger = logger;
             this.letstalkClient = letstalkClient;
@@ -35,12 +38,20 @@
                 ?? throw new ArgumentNullException(nameof(settings));
             this.schedulerFactory = schedulerFactory;
             this.maintenanceService = maintenanceService;
+            this.botConnector = botConnector;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            logger.Debug($"Letstalk API Monitor Service is starting.");
-            stoppingToken.Register(() => logger.Debug($"#1 Letstalk API Monitor Service is stopping."));
+            var startedMessage = "Letstalk API Monitor Service has been started.";
+            logger.Debug(startedMessage);
+            botConnector.Send(startedMessage, settings.SkypeHealthCheckHeartbeatConversationId);
+            stoppingToken.Register(() =>
+            {
+                var stoppedMessage = "Letstalk API Monitor Service has been stopped.";
+                logger.Debug(stoppedMessage);
+                botConnector.Send(stoppedMessage, settings.SkypeHealthCheckHeartbeatConversationId);
+            });
             var scheduler = await schedulerFactory.GetScheduler();
             var countSent = 0;
 

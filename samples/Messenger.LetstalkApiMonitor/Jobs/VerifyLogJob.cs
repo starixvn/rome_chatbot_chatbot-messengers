@@ -5,6 +5,7 @@
     using System.Threading.Tasks;
     using Fanex.Bot.Client;
     using Fanex.Data.Repository;
+    using Fanex.Logging;
     using Messenger.LetstalkApiMonitor.DbParams.Criterias;
     using Messenger.LetstalkApiMonitor.Models;
     using Quartz;
@@ -26,34 +27,41 @@
 
         public async Task Execute(IJobExecutionContext context)
         {
-            var dataMap = context.JobDetail.JobDataMap;
-            var healthCheckMessage = dataMap.GetString("message");
-            var logCategoryId = dataMap.GetIntValue("logCategoryId");
-            var skypeConversationId = dataMap.GetString("skypeConversationId");
-            var skypeHealthCheckHeartbeatConversationId = dataMap.GetString("skypeHealthCheckHeartbeatConversationId");
-            var isProduction = dataMap.GetBooleanValue("isProduction");
-            var periodSecond = dataMap.GetIntValue("periodSecond");
-            var isSendHeartbeat = dataMap.GetBooleanValue("isSendHeartbeat");
-
-            if (isSendHeartbeat
-                        && !string.IsNullOrWhiteSpace(skypeHealthCheckHeartbeatConversationId))
+            try
             {
-                botConnector.Send($"Letstalk Health Check Service heart beat at {DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")}", skypeHealthCheckHeartbeatConversationId);
-            }
+                var dataMap = context.JobDetail.JobDataMap;
+                var healthCheckMessage = dataMap.GetString("message");
+                var logCategoryId = dataMap.GetIntValue("logCategoryId");
+                var skypeConversationId = dataMap.GetString("skypeConversationId");
+                var skypeHealthCheckHeartbeatConversationId = dataMap.GetString("skypeHealthCheckHeartbeatConversationId");
+                var isProduction = dataMap.GetBooleanValue("isProduction");
+                var periodSecond = dataMap.GetIntValue("periodSecond");
+                var isSendHeartbeat = dataMap.GetBooleanValue("isSendHeartbeat");
 
-            var logs = await GetLogs(logCategoryId, isProduction, periodSecond);
-
-            foreach (var log in logs)
-            {
-                var logMessage = log?.FormattedMessage;
-
-                if (IsValidHealthCheckMessage(healthCheckMessage, logMessage))
+                if (isSendHeartbeat
+                            && !string.IsNullOrWhiteSpace(skypeHealthCheckHeartbeatConversationId))
                 {
-                    return;
+                    botConnector.Send($"Letstalk Health Check Service heart beat at {DateTime.Now.ToString("MM/dd/yyyy hh:mm tt")}", skypeHealthCheckHeartbeatConversationId);
                 }
-            }
 
-            botConnector.Send($"Alpha Webhook missed receiving **{healthCheckMessage}**", skypeConversationId);
+                var logs = await GetLogs(logCategoryId, isProduction, periodSecond);
+
+                foreach (var log in logs)
+                {
+                    var logMessage = log?.FormattedMessage;
+
+                    if (IsValidHealthCheckMessage(healthCheckMessage, logMessage))
+                    {
+                        return;
+                    }
+                }
+
+                botConnector.Send($"Alpha Webhook missed receiving **{healthCheckMessage}**", skypeConversationId);
+            }
+            catch (Exception ex)
+            {
+                LogService.Error(ex.ToString(), ex);
+            }
         }
 
         private static bool IsValidHealthCheckMessage(string healthCheckMessage, string logMessage)

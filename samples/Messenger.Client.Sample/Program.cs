@@ -207,8 +207,8 @@ namespace Messenger.Client.Sample
             letstalkClient.SetAutoReplyAsync(
                 "I'm being upgraded now... please kindly talk to me later.",
                 true,
-                DateTime.Now.AddHours(-2),
-                DateTime.Now.AddHours(-1))
+                DateTime.Now,
+                DateTime.Now.AddHours(3))
                 .GetAwaiter()
                 .GetResult();
             //    stopWatch.Stop();
