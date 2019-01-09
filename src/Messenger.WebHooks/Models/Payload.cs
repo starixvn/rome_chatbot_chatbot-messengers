@@ -30,7 +30,7 @@
         public string HashContent { get; set; }
 
         [JsonProperty(PropertyName = "hash_id")]
-        public int HashId { get; set; }
+        public long HashId { get; set; }
 
         [JsonProperty(PropertyName = "hash_type")]
         public int HashType { get; set; }
