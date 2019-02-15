@@ -10,7 +10,10 @@
         private static void Main()
         {
             var botId = AppSettings.Messenger.BotAccountId;
-            var restClient = new RestClientHelper(RestClientHelper.CreateDefaultClient(AppSettings.Messenger.ApiEndpoint), new JwtHelper(), AppSettings.Messenger);
+            var restClient = new RestClientHelper(
+                RestClientHelper.CreateDefaultClient(AppSettings.Messenger.ApiEndpoint, AppSettings.Messenger.ProxyAddress),
+                new JwtHelper(),
+                AppSettings.Messenger);
 
 #pragma warning disable CS0219 // Variable is assigned but its value is never used
             var wlCommnand = "{\"user_id\":\"starix_test96\",\"id\":1271,\"time\":1534842405686,\"type\":0,\"hash_type\":5,\"hash_content\":\"f1m+JUQnHlNjtdF0iXgcLw==\",\"hash_content_key\":\"591febf4006d3e52f1a2847b8fd1938942e7fb4f\",\"hash_id\":3,\"from\":0,\"receiver\":\"@nexdev.bot\",\"send_time\":1534842405719,\"duedate\":1537434405719}";

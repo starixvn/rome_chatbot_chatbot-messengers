@@ -23,7 +23,12 @@
             IRestClientHelper restClientHelper = null,
             ICryptographyHelper cryptographyHelper = null)
         {
-            this.restClientHelper = restClientHelper ?? new RestClientHelper(RestClientHelper.CreateDefaultClient(messengerSettings.ApiEndpoint), new JwtHelper(), messengerSettings);
+            this.restClientHelper = restClientHelper
+                ?? new RestClientHelper(
+                    RestClientHelper.CreateDefaultClient(messengerSettings.ApiEndpoint, messengerSettings.ProxyAddress),
+                    new JwtHelper(),
+                    messengerSettings);
+
             this.cryptographyHelper = cryptographyHelper ?? new CryptographyHelper();
             this.messengerSettings = messengerSettings;
             botId = this.messengerSettings.BotAccountId;
@@ -72,7 +77,7 @@
             payload.HashContentKey = cryptographyHelper.Hash(formattedMessage);
             payload.HashContent = cryptographyHelper.Encrypt(formattedMessage, messengerSettings.ChatKey, payload.HashContentKey);
 
-            payload.DueDate = message.ExpiredTime.HasValue 
+            payload.DueDate = message.ExpiredTime.HasValue
                     ? new DateTimeOffset(message.ExpiredTime.Value).ToUnixTimeMilliseconds()
 #pragma warning disable S3358 // Ternary operators should not be nested
                     : expiredTime.HasValue

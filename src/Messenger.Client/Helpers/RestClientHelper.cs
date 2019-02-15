@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Net;
     using System.Text;
     using System.Threading.Tasks;
     using Messenger.Client.Configurations;
@@ -126,7 +127,7 @@
                     $"Content: {response.Content}",
                     $"Status Code: {response.StatusCode}",
                     $"Response Status: {response.ResponseStatus}",
-                    $"Error Message: {response.ErrorMessage}"), 
+                    $"Error Message: {response.ErrorMessage}"),
                     exception);
             }
         }
@@ -151,10 +152,11 @@
         public Task<T> ExecuteDeleteAsync<T>(string endPoint, IDictionary<string, object> data) where T : new()
             => ExecuteSync<T>(endPoint, Method.DELETE, data);
 
-        public static IRestClient CreateDefaultClient(string apiEndpoint)
+        public static IRestClient CreateDefaultClient(string apiEndpoint, string proxyAddress)
             => new RestClient
             {
-                BaseUrl = new Uri(apiEndpoint)
+                BaseUrl = new Uri(apiEndpoint),
+                Proxy = new WebProxy(proxyAddress)
             };
 
         private string Encode(IDictionary<string, object> data)

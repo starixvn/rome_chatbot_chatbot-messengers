@@ -28,11 +28,13 @@
         int BusinessAccountType { get; }
 
         int EncryptionMode { get; }
+        string ProxyAddress { get; }
     }
 
     public class LetstalkSettings : IMessengerSettings
     {
 #pragma warning disable S107 // Methods should not have too many parameters
+
         public LetstalkSettings(
             string apiEndpoint,
             string apiKey,
@@ -42,7 +44,8 @@
             string botUserId,
             int chatKeyVersion,
             int businessAccountType,
-            int encryptionMode)
+            int encryptionMode,
+            string proxyAddress)
 #pragma warning restore S107 // Methods should not have too many parameters
         {
             ApiEndpoint = apiEndpoint;
@@ -54,6 +57,7 @@
             ChatKeyVersion = chatKeyVersion;
             BusinessAccountType = businessAccountType;
             EncryptionMode = encryptionMode;
+            ProxyAddress = proxyAddress;
         }
 
         public string ApiEndpoint { get; }
@@ -73,6 +77,8 @@
         public int BusinessAccountType { get; }
 
         public int EncryptionMode { get; }
+
+        public string ProxyAddress { get; }
     }
 
     public static class AppSettings
@@ -82,6 +88,7 @@
 #endif
 
 #pragma warning disable S3963 // "static" fields should be initialized inline
+
         static AppSettings()
         {
 #if NETSTANDARD2_0
@@ -108,6 +115,7 @@
             var chatKeyVersion = int.Parse(GetConfigs("MessengerAPIClient:ChatKeyVersion"));
             var businessAccountType = int.Parse(GetConfigs("MessengerAPIClient:BusinessAccountType"));
             var encryptionMode = int.Parse(GetConfigs("MessengerAPIClient:EncryptionMode"));
+            var proxyAddress = GetConfigs("MessengerAPIClient:ProxyAddress");
 
             Messenger = new LetstalkSettings(
                 messengerApiEndpoint,
@@ -118,8 +126,10 @@
                 messengerBotUserId,
                 chatKeyVersion,
                 businessAccountType,
-                encryptionMode);
+                encryptionMode,
+                proxyAddress);
         }
+
 #pragma warning restore S3963 // "static" fields should be initialized inline
 
         private static string GetConfigs(string configName)
