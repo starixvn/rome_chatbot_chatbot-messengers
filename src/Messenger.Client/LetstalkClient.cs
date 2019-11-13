@@ -12,6 +12,8 @@
 
     public class LetstalkClient : IMessengerClient
     {
+        private const int payloadId = 100;
+        private const int defaultExpiredTimeInHour = 3;
         private readonly int botId;
         private readonly IRestClientHelper restClientHelper;
         private readonly ICryptographyHelper cryptographyHelper;
