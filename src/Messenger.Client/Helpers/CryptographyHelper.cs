@@ -130,9 +130,13 @@
         {
             int NumberChars = hex.Length;
             byte[] bytes = new byte[NumberChars / 2];
+#pragma warning disable S109 // Magic numbers should not be used
             for (int i = 0; i < NumberChars; i += 2)
+#pragma warning restore S109 // Magic numbers should not be used
             {
+#pragma warning disable S109 // Magic numbers should not be used
                 bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
+#pragma warning restore S109 // Magic numbers should not be used
             }
 
             return bytes;

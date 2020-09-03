@@ -86,7 +86,7 @@
         {
 #if NETSTANDARD2_0
             var currentDirectory = Directory.GetCurrentDirectory();
-            var configFileName = "appsettings.json";
+            const string configFileName = "appsettings.json";
 
             if (File.Exists(Path.Combine(currentDirectory, configFileName)))
             {

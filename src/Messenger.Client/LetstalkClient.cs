@@ -74,9 +74,13 @@
 
             payload.DueDate = message.ExpiredTime.HasValue 
                     ? new DateTimeOffset(message.ExpiredTime.Value).ToUnixTimeMilliseconds()
+#pragma warning disable S3358 // Ternary operators should not be nested
                     : expiredTime.HasValue
                         ? new DateTimeOffset(expiredTime.Value).ToUnixTimeMilliseconds()
+#pragma warning disable S109 // Magic numbers should not be used
                         : DateTimeOffset.Now.AddHours(3).ToUnixTimeMilliseconds();
+#pragma warning restore S109 // Magic numbers should not be used
+#pragma warning restore S3358 // Ternary operators should not be nested
 
             return PushAsync(accountIds, payload);
         }
@@ -93,7 +97,9 @@
             payload.HashType = messengerSettings.EncryptionMode;
             payload.From = messengerSettings.BusinessAccountType;
             payload.Type = OutGoingMessageType.Text;
+#pragma warning disable S109 // Magic numbers should not be used
             payload.Id = 100;
+#pragma warning restore S109 // Magic numbers should not be used
             payload.Receiver = accountIdToLowerList.ElementAt(0);
             payload.HashId = messengerSettings.ChatKeyVersion;
 
