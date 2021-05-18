@@ -5,17 +5,24 @@
     using System.Web.Http;
     using Chatbot.Client;
     using Chatbot.Client.Configurations;
+    using Fanex.Logging;
     using Fanex.Logging.Extensions.Web;
+    using Fanex.Logging.RabbitMQ;
     using Messenger.WebHooks.App_Start;
 
     public class WebApiApplication : System.Web.HttpApplication
     {
         protected void Application_Start()
         {
+            var appSettings = ConfigurationManager.AppSettings;
+            LogManager
+                .SetDefaultLogCategory(appSettings["Fanex.Logging:DefaultCategory"])
+                .Use(new RabbitMQLogging(appSettings["Fanex.Logging:RabbitMQConnectionStrings"]));
+
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
-            var chatbotBaseUrl = ConfigurationManager.AppSettings["Chatbot:BaseUrl"] ?? throw new InvalidOperationException("Missing config for Chatbot:BaseUrl");
-            var chatbotApiKey = ConfigurationManager.AppSettings["Chatbot:ApiKey"] ?? throw new InvalidOperationException("Missing config for Chatbot:ApiKey");
+            var chatbotBaseUrl = appSettings["Chatbot:BaseUrl"] ?? throw new InvalidOperationException("Missing config for Chatbot:BaseUrl");
+            var chatbotApiKey = appSettings["Chatbot:ApiKey"] ?? throw new InvalidOperationException("Missing config for Chatbot:ApiKey");
 
             ChatbotClientManager
                 .UseConfig(new BotClientConfigs(chatbotBaseUrl, chatbotApiKey))

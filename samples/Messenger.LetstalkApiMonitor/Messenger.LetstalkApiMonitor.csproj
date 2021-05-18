@@ -39,7 +39,7 @@
   <ItemGroup>
     <PackageReference Include="Fanex.Bot.Client" Version="1.0.4.4" />
     <PackageReference Include="Fanex.Data.Repository" Version="3.0.0-rc4" />
-    <PackageReference Include="Fanex.Logging.RabbitMQ" Version="1.0.0-beta8" />
+    <PackageReference Include="Fanex.Logging.RabbitMQ" Version="1.0.1" />
     <PackageReference Include="Messenger.Client" Version="1.0.2-beta1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.1.1" />
