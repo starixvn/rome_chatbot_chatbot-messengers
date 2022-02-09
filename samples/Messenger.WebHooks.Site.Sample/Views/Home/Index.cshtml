@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Webhook Testing Page";
 }
 
@@ -15,7 +14,6 @@
         <div class="col-sm-12">
             @Html.DropDownListFor(model => model.WebhookUrl, new SelectList(Model.WebhookUrls), new { @class = "form-control" })
         </div>
-
     </div>
 
     <div class="form-group">
@@ -23,7 +21,6 @@
         <div class="col-sm-12">
             @Html.DropDownListFor(model => model.Command, new SelectList(Model.CommandInfoList.Keys), new { @class = "form-control" })
         </div>
-
     </div>
 
     <div class="form-group">
@@ -50,5 +47,4 @@
             }
         </h4>
     }
-
 }

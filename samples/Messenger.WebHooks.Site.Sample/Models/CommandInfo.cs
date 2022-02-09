@@ -3,34 +3,50 @@
     using System;
     using System.Collections.Generic;
     using System.Configuration;
-    using System.Linq;
-    using System.Web;
     using Messenger.Client.Models;
 
     public class CommandInfo
     {
-        private readonly static Dictionary<string, string> commandInfoList
+        // Local01
+        //public IDictionary<string, string> CommandInfoList { get; }
+        //    = new Dictionary<string, string>
+        //    {
+        //        ["/os"] = "\"hash_content\":\"jIFebHelqx5vFDkcAFEjtw==\",\"hash_content_key\":\"a507d2d570de2a029bfea57075435b1170835e52\"",
+        //        ["/wl"] = "\"hash_content\":\"Dvwof3UlhVLVfi9OIBFY1w==\",\"hash_content_key\":\"e1d747f6eafec5002bcc382408613f459d3ed867\"",
+        //        ["/bal"] = "\"hash_content\":\"j4VnkVS38pnhLnzU2/e2MQ==\",\"hash_content_key\":\"dd1f37124620045ba025497edd328df41287ad7b\"",
+        //        ["/not-found-command"] = "\"hash_content\":\"hZIijSW9gRE6LYKi3vMUtQ==\",\"hash_content_key\":\"f8fea8e0c458f535e25205b988936520736e8bc2\"",
+        //    };
+
+
+        // Local02
+        //public IDictionary<string, string> CommandInfoList { get; }
+        //    = new Dictionary<string, string>
+        //    {
+        //        ["/os"] = "\"hash_content\":\"YpNIwhVYn3LszOrhMZDweg==\",\"hash_content_key\":\"bdf5ae859a340ad0dd2d256fd921dbbb11c39320\"",
+        //        ["/wl"] = "\"hash_content\":\"s2YNW8x7sokiiE0y63k51w==\",\"hash_content_key\":\"e9ed25360b089396fa0a8e84255c35787e7e9069\"",
+        //        ["/bal"] = "\"hash_content\":\"91mA3oz6cYHYuPb/kpSkkQ==\",\"hash_content_key\":\"31037af04b2f9cf5b7cd0d763f703d988ec67da3\"",
+        //        ["/not-found-command"] = "\"hash_content\":\"j+Mppteqgn0Le9Bz9yzTbQ==\",\"hash_content_key\":\"3db82dd93d7d2f75d21556fca317272ae29f20d7\"",
+        //    };
+
+        // Local03
+        public IDictionary<string, string> CommandInfoList { get; }
             = new Dictionary<string, string>
             {
-                { "/os", "{\"user_id\":\"{0}\",\"id\":1277,\"time\":1534842727531,\"type\":0,\"hash_type\":5,\"hash_content\":\"b46Fqi5ox0eJ1uXTaYOmcA==\",\"hash_content_key\":\"e1da28443b9d65ae59426c49610292566465b3e6\",\"hash_id\":3,\"from\":0,\"receiver\":\"@nexdev.bot\",\"send_time\":1534842727568,\"duedate\":1537434727568}" },
-                { "/wl", "{\"user_id\":\"{0}\",\"id\":1271,\"time\":1534842405686,\"type\":0,\"hash_type\":5,\"hash_content\":\"JxQwaJhHJH88RU3GsjvAqw==\",\"hash_content_key\":\"591febf4006d3e52f1a2847b8fd1938942e7fb4f\",\"hash_id\":3,\"from\":0,\"receiver\":\"@nexdev.bot\",\"send_time\":1534842405719,\"duedate\":1537434405719}" },
-                { "/bal", "{\"user_id\":\"{0}\",\"id\":1279,\"time\":1534842731491,\"type\":0,\"hash_type\":5,\"hash_content\":\"VqPtaqforPlao2KYHMBvqw==\",\"hash_content_key\":\"456d0b7e0328e8fb9fdf6510a035599e26923aec\",\"hash_id\":3,\"from\":0,\"receiver\":\"@nexdev.bot\",\"send_time\":1534842731523,\"duedate\":1537434731523}" },
-                { "/not-found-command", "{\"user_id\":\"{0}\",\"id\":1293,\"time\":1534842920137,\"type\":0,\"hash_type\":5,\"hash_content\":\"nu+KqY8aF6sYQ7LYHDgk833xr01E0mHBk1eaBqgGW5E=\",\"hash_content_key\":\"8f979568c439244e71edf9200c7241c2c4cc5719\",\"hash_id\":3,\"from\":0,\"receiver\":\"@nexdev.bot\",\"send_time\":1534842920168,\"duedate\":1537434920168}" }
+                ["/os"] = "\"hash_content\":\"eAZpkMWKWk77k1wSoTpIeQ==\",\"hash_content_key\":\"c9f9bd3373cbee049bea80621a2d23a61cf4bbde\"",
+                ["/wl"] = "\"hash_content\":\"qLr5+MtL+rVy5AK7yEuJGg==\",\"hash_content_key\":\"a0daad64c8d4df7309069832b1a31c98a8924874\"",
+                ["/bal"] = "\"hash_content\":\"j2wVsSfXods9Ot9W9lJ6cg==\",\"hash_content_key\":\"5715eb5536c4103d80f00756c5f4af50390fcd4b\"",
+                ["/not-found-command"] = "\"hash_content\":\"phXhvsdwdcmw5mCIhfRzFw==\",\"hash_content_key\":\"1d3f07a3133009d989493ab3d5b8e1ba8c0a1f2f\"",
             };
 
-        private readonly static IEnumerable<string> webhookUrls
-            = ConfigurationManager.AppSettings["WebhookUrls"].Split(',').AsEnumerable();
+        public IEnumerable<string> WebhookUrls { get; }
+            = ConfigurationManager.AppSettings["WebhookUrls"].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-        public string LetstalkId { get; set; } = "starix_test96";
+        public string LetstalkId { get; } = "t233663";
 
         public string WebhookUrl { get; set; }
 
         public string Command { get; set; }
 
         public Result Result { get; set; }
-
-        public Dictionary<string, string> CommandInfoList => commandInfoList;
-
-        public IEnumerable<string> WebhookUrls => webhookUrls;
     }
 }
