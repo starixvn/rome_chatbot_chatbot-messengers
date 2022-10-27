@@ -63,7 +63,7 @@
                         .WhiteListIPs
                         .Any(ip => userIP.Contains(ip)))
                     {
-                        return await Task.FromResult(request.CreateErrorResponse(HttpStatusCode.Forbidden, "IP Restricted"));
+                        return await Task.FromResult(request.CreateErrorResponse(HttpStatusCode.Forbidden, $"IP Restricted"));
                     }
                 }
 

@@ -68,6 +68,8 @@
                     return;
                 }
 
+                await logger.InfoAsync(rawMessage);
+
                 await commandService.Run(message.Msg, message.Postback?.Data, MessengerType, hookEvent.Source.UserId);
             }
             catch (Exception ex)
